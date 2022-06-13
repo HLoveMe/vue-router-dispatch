@@ -51,9 +51,10 @@ module.exports = {
   resolve: {
     extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
   },
-  externals:{
-    // axios:'axios',
-    // rxjs:'rxjs'
+  externals: {
+    rxjs: 'rxjs',
+    vue: 'vue',
+    'vue-router': 'vue-router'
   },
   devtool: 'cheap-module-source-map',
 };
