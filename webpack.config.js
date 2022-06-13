@@ -53,5 +53,4 @@ module.exports = {
     vue: 'vue',
     "vue-router": 'vue-router',
   },
-  devtool: 'cheap-module-source-map',
 };

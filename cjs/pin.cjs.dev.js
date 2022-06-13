@@ -1939,6 +1939,7 @@ var __webpack_exports__ = {};
   \***********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "VueRouterPin": () => (/* reexport safe */ _RouterPin__WEBPACK_IMPORTED_MODULE_2__["default"]),
 /* harmony export */   "dispatchEvent": () => (/* binding */ dispatchEvent),
 /* harmony export */   "useRoutePin": () => (/* binding */ useRoutePin),
 /* harmony export */   "useRouterPin": () => (/* binding */ useRouterPin)

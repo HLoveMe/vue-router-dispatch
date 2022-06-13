@@ -69,3 +69,5 @@ export function useRoutePin(): RoutePin;
 export function useRouterPin(): RouterPin;
 
 export function dispatchEvent(type: string, data: any, isAsync?: boolean, target?: MessageSource): Promise<any>;
+
+export const VueRouterPin: Plugin;
