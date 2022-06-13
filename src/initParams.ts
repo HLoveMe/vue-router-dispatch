@@ -1,11 +1,11 @@
 import { BehaviorSubject, Subject } from "rxjs";
-import { AsyncEvent, ServerBase, ServerRouter } from "./type";
+import { AsyncEvent, RoutePin, RouterPin, ServerBase, ServerRouter } from "./type";
 
 function noop() { };
 
 const hasSymbol = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
 
-const PolySymbol = (name:string) =>
+const PolySymbol = (name: string) =>
   // vr = vue router
   hasSymbol
     ? Symbol.for('[r-server]: ' + name)
@@ -38,6 +38,19 @@ const Global_Serve: ServerRouter = {
   clearSubs: [],
 }
 
+const emptyRunNoop = (): any => {
+  console.error('please install vue-router-pin')
+  return;
+}
+const EmptyPin: RoutePin & RouterPin = {
+  on: emptyRunNoop,
+  onBehavior: emptyRunNoop,
+  once: emptyRunNoop,
+  onError: emptyRunNoop,
+  dispatch: emptyRunNoop,
+  dispatchAsync: emptyRunNoop,
+}
+
 export {
   GlobalRServerKey,
   CurrentRServerKey,
@@ -47,5 +60,6 @@ export {
   initEvent,
   initEventKey,
   PolySymbol,
-  noop
+  noop,
+  EmptyPin,
 }

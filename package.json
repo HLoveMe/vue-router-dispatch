@@ -7,7 +7,7 @@
     "tsc": "tsc",
     "prod":"webpack --config webpack.config.js",
     "dev": "webpack --config webpack.config.dev.js",
-    "build": "webpack --config webpack.config.js && webpack --config webpack.config.dev.js"
+    "build": "tsc --watch false && webpack --config webpack.config.js && webpack --config webpack.config.dev.js"
   },
   "repository": {
     "type": "git",

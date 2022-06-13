@@ -1,5 +1,5 @@
 import { useRoute, useRouter } from "vue-router";
-import { CurrentRServerKey, GlobalRServerKey } from "./initParams";
+import { CurrentRServerKey, GlobalRServerKey, EmptyPin } from "./initParams";
 import Server, { createRxFunc } from "./RouterPin";
 import { MessageSource, RoutePin, RouterPin, ServerRoute, ServerRouter } from "./type";
 import { inject } from "vue";
@@ -10,6 +10,9 @@ import { inject } from "vue";
  */
 function useRoutePin(): RoutePin {
   const currentServe: ServerRoute = inject(CurrentRServerKey) as ServerRoute;
+  if (!currentServe) {
+    return EmptyPin
+  }
   return createRxFunc(currentServe, useRoute())
 }
 /**
@@ -18,6 +21,9 @@ function useRoutePin(): RoutePin {
  */
 function useRouterPin(): RouterPin {
   const currentServe: ServerRouter = inject(GlobalRServerKey) as ServerRouter;
+  if (!currentServe) {
+    return EmptyPin
+  }
   return createRxFunc(currentServe, useRouter());
 }
 

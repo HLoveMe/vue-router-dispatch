@@ -316,6 +316,7 @@ var Server = createPinServer();
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "CurrentRServerKey": () => (/* binding */ CurrentRServerKey),
+/* harmony export */   "EmptyPin": () => (/* binding */ EmptyPin),
 /* harmony export */   "GlobalRServerKey": () => (/* binding */ GlobalRServerKey),
 /* harmony export */   "Global_Serve": () => (/* binding */ Global_Serve),
 /* harmony export */   "PolySymbol": () => (/* binding */ PolySymbol),
@@ -362,6 +363,20 @@ var Global_Serve = {
   channelCenter: new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(initEvent),
   errorChanel: new rxjs__WEBPACK_IMPORTED_MODULE_0__.Subject(),
   clearSubs: []
+};
+
+var emptyRunNoop = () => {
+  console.error('please install vue-router-pin');
+  return;
+};
+
+var EmptyPin = {
+  on: emptyRunNoop,
+  onBehavior: emptyRunNoop,
+  once: emptyRunNoop,
+  onError: emptyRunNoop,
+  dispatch: emptyRunNoop,
+  dispatchAsync: emptyRunNoop
 };
 
 
@@ -1961,6 +1976,11 @@ __webpack_require__.r(__webpack_exports__);
 
 function useRoutePin() {
   var currentServe = (0,vue__WEBPACK_IMPORTED_MODULE_3__.inject)(_initParams__WEBPACK_IMPORTED_MODULE_1__.CurrentRServerKey);
+
+  if (!currentServe) {
+    return _initParams__WEBPACK_IMPORTED_MODULE_1__.EmptyPin;
+  }
+
   return (0,_RouterPin__WEBPACK_IMPORTED_MODULE_2__.createRxFunc)(currentServe, (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.useRoute)());
 }
 /**
@@ -1971,6 +1991,11 @@ function useRoutePin() {
 
 function useRouterPin() {
   var currentServe = (0,vue__WEBPACK_IMPORTED_MODULE_3__.inject)(_initParams__WEBPACK_IMPORTED_MODULE_1__.GlobalRServerKey);
+
+  if (!currentServe) {
+    return _initParams__WEBPACK_IMPORTED_MODULE_1__.EmptyPin;
+  }
+
   return (0,_RouterPin__WEBPACK_IMPORTED_MODULE_2__.createRxFunc)(currentServe, (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.useRouter)());
 }
 
