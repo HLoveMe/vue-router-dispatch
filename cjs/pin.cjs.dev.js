@@ -1981,7 +1981,7 @@ function useRoutePin() {
     return _initParams__WEBPACK_IMPORTED_MODULE_1__.EmptyPin;
   }
 
-  return (0,_RouterPin__WEBPACK_IMPORTED_MODULE_2__.createRxFunc)(currentServe, (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.useRoute)());
+  return (0,_RouterPin__WEBPACK_IMPORTED_MODULE_2__.createRxFunc)(currentServe.value, (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.useRoute)());
 }
 /**
  *

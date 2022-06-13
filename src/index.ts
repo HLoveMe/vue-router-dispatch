@@ -2,18 +2,18 @@ import { useRoute, useRouter } from "vue-router";
 import { CurrentRServerKey, GlobalRServerKey, EmptyPin } from "./initParams";
 import Server, { createRxFunc } from "./RouterPin";
 import { MessageSource, RoutePin, RouterPin, ServerRoute, ServerRouter } from "./type";
-import { inject } from "vue";
+import { inject, ShallowRef } from "vue";
 
 /**
  * 
  * @returns 当前路由派发
  */
 function useRoutePin(): RoutePin {
-  const currentServe: ServerRoute = inject(CurrentRServerKey) as ServerRoute;
+  const currentServe: ShallowRef<ServerRoute> = inject(CurrentRServerKey) as ShallowRef<ServerRoute>;
   if (!currentServe) {
     return EmptyPin
   }
-  return createRxFunc(currentServe, useRoute())
+  return createRxFunc(currentServe.value, useRoute())
 }
 /**
  * 
