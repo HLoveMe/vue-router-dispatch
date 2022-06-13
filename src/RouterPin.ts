@@ -1,97 +1,9 @@
-/*
- * @Author: zihao.zhu@united-imaging.com 
- * @Date: 2022-03-30 18:03:18 
- * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-06-13 16:41:32
- * @desc : 事件派发器 - 根据路由信息创建一个派发器
- */
-
-import { BehaviorSubject, Subject, Subscription, Observable, from, zip } from "rxjs";
+import { BehaviorSubject, from, Observable, Subscription, zip } from "rxjs";
 import { filter, takeLast, take, bufferCount, map } from 'rxjs/operators';
-import { Plugin, shallowRef, App, inject, Ref } from "vue";
-import {
-  Router,
-  RouteLocationNormalized,
-  RouteLocationRaw,
-  useRouter,
-  useRoute,
-} from "vue-router";
-
-type MessageSource = RouteLocationNormalized | Router
-export interface EventInfo {
-  type: string | symbol,
-  data: any,
-  source?: MessageSource,
-}
-
-export interface AsyncEvent extends EventInfo {
-  resolve: (data: any) => void
-  reject: (error: Error) => void
-}
-type PinServer = {
-  dispatch: (type: string, data: any, isAsync?: boolean, target?: MessageSource) => Promise<any>
-} & Plugin
-
-interface ServerBase {
-  id: string | symbol,
-  channelCenter: BehaviorSubject<AsyncEvent>,
-  errorChanel: Subject<Error>,
-  clearSubs: Array<Subscription>,
-  children: Array<ServerBase>,
-  super?: ServerBase,
-}
-type ServerRoute = ServerBase & {
-  route?: RouteLocationNormalized
-}
-type ServerRouter = ServerBase & { router?: Router }
-type EventCallBack = (event: AsyncEvent) => void
-export type Clear = { close(): void }
-type BasePin = {
-  on(type: string | RegExp, callback: EventCallBack): Clear,
-  onBehavior(type: string | RegExp, callback: EventCallBack): Clear;// 容许接受上一个消息
-  once(type: string | RegExp, callback: EventCallBack): Clear,
-  onError(callback: (error: Error) => void): void,
-}
-export type RoutePin = BasePin & {
-  dispatch(type: string, data: any): void,
-  dispatchAsync(type: string, data: any): Promise<any>,
-}
-export type RouterPin = BasePin & {
-  dispatch(type: string, data: any): void,
-  dispatchAsync(type: string, data: any, route?: RouteLocationRaw): Promise<any>,
-}
-
-/////////////
-function noop() { };
-const hasSymbol = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
-const PolySymbol = (name) =>
-  // vr = vue router
-  hasSymbol
-    ? Symbol.for('[r-server]: ' + name)
-    : ('[r-server]: ') + name;
-/////////////////////////////
-const initEventKey = PolySymbol('event-init');
-const GlobalRServerKey = PolySymbol('GlobalRServerKey');
-const CurrentRServerKey = PolySymbol('CurrentRServerKey');
-const ServerMap = new Map<string | symbol, ServerBase>();
-
-const initEvent: AsyncEvent = { type: initEventKey, data: null, reject: noop, resolve: noop, source: undefined }
-
-const SHALL_CURRENT: ServerBase = {
-  id: '',
-  channelCenter: new BehaviorSubject<AsyncEvent>(initEvent),
-  errorChanel: new Subject(),
-  children: [],
-  clearSubs: [],
-};
-const Global_Serve: ServerRouter = {
-  id: GlobalRServerKey,
-  router: undefined,
-  children: [],
-  channelCenter: new BehaviorSubject<AsyncEvent>(initEvent),
-  errorChanel: new Subject(),
-  clearSubs: [],
-}
+import { RouteLocationNormalized, RouteLocationRaw, Router, useRoute } from "vue-router";
+import { initEvent, PolySymbol, ServerMap, SHALL_CURRENT, GlobalRServerKey, initEventKey, Global_Serve, CurrentRServerKey, noop } from "./initParams";
+import { AsyncEvent, EventCallBack, ServerBase, ServerRoute, MessageSource, PinServer } from "./type";
+import { shallowRef, App } from "vue";
 
 const getCurrentServer = (current: RouteLocationNormalized) => {
   var result: ServerRoute = {} as ServerRoute;
@@ -172,7 +84,7 @@ function dispatch(tran: ServerBase, event: AsyncEvent, isAsync: boolean = false)
 
 function on(tran: ServerBase, type: string | RegExp, callback: EventCallBack) {
   const { channelCenter, errorChanel } = tran;
-  const sub = channelCenter
+  const sub: Subscription = channelCenter
     .pipe(
       filter((event: AsyncEvent) => isEventType(event, type) || event.type === initEventKey),
       bufferCount(2, 1),
@@ -189,7 +101,7 @@ function on(tran: ServerBase, type: string | RegExp, callback: EventCallBack) {
 
 function once(tran: ServerBase, type: string | RegExp, callback: EventCallBack) {
   const { channelCenter, errorChanel } = tran;
-  const sub = channelCenter
+  const sub: Subscription = channelCenter
     .pipe(
       filter((event: AsyncEvent) => isEventType(event, type) || event.type === initEventKey),
       bufferCount(2, 1),
@@ -206,7 +118,7 @@ function once(tran: ServerBase, type: string | RegExp, callback: EventCallBack) 
 }
 function onBehavior(tran: ServerBase, type: string | RegExp, callback: EventCallBack) {
   const { channelCenter, errorChanel } = tran;
-  const sub = channelCenter
+  const sub: Subscription = channelCenter
     .pipe(
       filter(event => isEventType(event, type) && event.type !== initEventKey),
     )
@@ -232,7 +144,7 @@ function onError(tran: ServerBase, callback: Function) {
   tran.clearSubs.push(sub);
 }
 
-const createRxFunc = (pin: ServerBase, source: MessageSource) => {
+export const createRxFunc = (pin: ServerBase, source: MessageSource) => {
   const router = Global_Serve.router;
   // 只有router 可以指定在哪个pin触发
   const getDispatchPin = (route?: RouteLocationRaw): ServerBase => {
@@ -340,30 +252,3 @@ function createPinServer(): PinServer {
 const Server: PinServer = createPinServer();
 
 export default Server;
-
-/**
- * 
- * @returns 当前路由派发
- */
-function useRoutePin(): RoutePin {
-  const currentServe: ServerRoute = inject(CurrentRServerKey) as ServerRoute;
-  return createRxFunc(currentServe, useRoute())
-}
-/**
- * 
- * @returns 全局派发
- */
-function useRouterPin(): RouterPin {
-  const currentServe: ServerRouter = inject(GlobalRServerKey) as ServerRouter;
-  return createRxFunc(currentServe, useRouter());
-}
-
-function dispatchEvent(type: string, data: any, isAsync?: boolean, target?: MessageSource): Promise<any> {
-  return Server.dispatch(type, data, isAsync, target);
-}
-
-export {
-  useRoutePin,
-  useRouterPin,
-  dispatchEvent,
-}

@@ -1,12 +1,11 @@
 const path = require('path');
 module.exports = {
   mode: 'development',
-  entry: {
-    'index': path.join(__dirname, "dist", 'web', 'index.js')
-  },
+  entry: path.join(__dirname, "dist", "index.js"),
   output: {
-    path: path.join(__dirname, "dist", 'web2'),
-    library: 'Flow',// 
+    path: path.join(__dirname, "cjs"),
+    filename:'pin-dev.js',
+    library: 'Pin',// 
     libraryTarget: 'umd',
   },
   module: {
@@ -54,7 +53,6 @@ module.exports = {
   externals: {
     rxjs: 'rxjs',
     vue: 'vue',
-    'vue-router': 'vue-router'
   },
   devtool: 'cheap-module-source-map',
 };
