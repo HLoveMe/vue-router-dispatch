@@ -2,9 +2,10 @@
   "name": "vue-router-dispatch",
   "version": "1.0.0",
   "description": "\"# vue-router-dispatch\"",
-  "main": "index.js",
+  "main": "cjs/index.js",
   "scripts": {
     "tsc": "tsc",
+    "prod":"webpack --config webpack.config.js",
     "build": "webpack --config webpack.config.dev.js"
   },
   "repository": {

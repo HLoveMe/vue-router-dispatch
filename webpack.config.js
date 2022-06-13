@@ -1,10 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: path.join(__dirname, "dist", "index.js"),
   output: {
     path: path.join(__dirname, "cjs"),
-    filename:'pin.cjs.dev.js',
+    filename: 'pin.cjs.prod.js',
     library: 'Pin',// 
     libraryTarget: 'umd',
   },
