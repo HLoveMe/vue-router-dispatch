@@ -69,7 +69,7 @@
     dispatch('eventName', {});
     </script>
 
-    // Home 组件下，或者子组件中
+    // 整个应用
     import { dispatchEvent } from 'vue-router-dispatch';
     事件派发方式2
     dispatchEvent('eventName', {});
