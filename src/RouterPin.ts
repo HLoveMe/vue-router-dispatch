@@ -224,7 +224,21 @@ function createPinServer(): PinServer {
         })
       }
     },
-    dispatch: (type: string, data: any, isAsync?: boolean, target?: MessageSource) => {
+    dispatch: (type: string, data: any, ...args: any[]) => {
+      let isAsync: boolean = false;
+      let target: RouteLocationRaw | undefined = undefined;
+      if (args.length === 2) {
+        isAsync = args[0] as boolean;
+        target = args[1] as RouteLocationRaw;
+      } else if (args.length === 1) {
+        if (typeof args[0] === 'boolean') {
+          isAsync = args[0] as boolean;
+          target = undefined
+        } else {
+          target = args[0] as RouteLocationRaw;
+          isAsync = false;
+        }
+      }
       let pin: ServerBase | undefined = undefined
       if (!!target === false) pin = Global_Serve;
       if (target === Global_Serve.router) pin = Global_Serve;

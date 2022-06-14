@@ -17,10 +17,12 @@ export interface AsyncEvent extends EventInfo {
   resolve: (data: any) => void
   reject: (error: Error) => void
 }
-export type PinServer = {
-  dispatch: (type: string, data: any, isAsync?: boolean, target?: MessageSource) => Promise<any>
-} & Plugin
 
+export interface PinServer {
+  dispatch(type: string, data: any, isAsync?: boolean, target?: MessageSource): Promise<any>;
+  dispatch(type: string, data: any, isAsync?: boolean): void;
+  dispatch(type: string, data: any, target?: MessageSource): Promise<any>;
+}
 export interface ServerBase {
   id: string | symbol,
   channelCenter: BehaviorSubject<AsyncEvent>,

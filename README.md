@@ -21,6 +21,7 @@
     // 注册路由
     app.use(router);
     // 事件Pin 注册
+    // app.use(VueRouterPin);
     VueRouterPin.install(app);
     ```
   * 使用事件Pin，在路由单元中派发事件
@@ -98,7 +99,7 @@
       dispatch('eventName', {});
       ```
     
-    * dispatchEvent 用于任意事件派发。
+    * dispatchEvent 用于任意事件派发。默认全局派发，可以指定单元派发
   
     * 事件注册和注销
       ```

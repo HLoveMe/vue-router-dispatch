@@ -275,7 +275,23 @@ function createPinServer() {
       };
     },
 
-    dispatch: (type, data, isAsync, target) => {
+    dispatch: function dispatch(type, data) {
+      var isAsync = false;
+      var target = undefined;
+
+      if ((arguments.length <= 2 ? 0 : arguments.length - 2) === 2) {
+        isAsync = arguments.length <= 2 ? undefined : arguments[2];
+        target = arguments.length <= 3 ? undefined : arguments[3];
+      } else if ((arguments.length <= 2 ? 0 : arguments.length - 2) === 1) {
+        if (typeof (arguments.length <= 2 ? undefined : arguments[2]) === 'boolean') {
+          isAsync = arguments.length <= 2 ? undefined : arguments[2];
+          target = undefined;
+        } else {
+          target = arguments.length <= 2 ? undefined : arguments[2];
+          isAsync = false;
+        }
+      }
+
       var pin = undefined;
       if (!!target === false) pin = _initParams__WEBPACK_IMPORTED_MODULE_2__.Global_Serve;
       if (target === _initParams__WEBPACK_IMPORTED_MODULE_2__.Global_Serve.router) pin = _initParams__WEBPACK_IMPORTED_MODULE_2__.Global_Serve;else {

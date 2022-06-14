@@ -4,7 +4,7 @@ module.exports = {
   entry: path.join(__dirname, "dist", "index.js"),
   output: {
     path: path.join(__dirname, "cjs"),
-    filename:'pin.cjs.dev.js',
+    filename: 'pin.cjs.dev.js',
     library: 'Pin',// 
     libraryTarget: 'umd',
   },
