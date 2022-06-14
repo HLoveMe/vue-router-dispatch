@@ -123,8 +123,20 @@
 
 
   * 异步触发
+    针对回调函数异步触发。等待所有回调函数都调用完成后，才会执行下一步操作。
 
     ```
+      import { useRoutePin ,dispatchEvent} from 'vue-router-dispatch';
+        const pin:RoutePin = useRoutePin();
+        const clear1 = pin.on('eventName', ({data,resolve,reject}) => {
+          // 异步是可选的，如果不需要异步，不回调
+          resolve({}) // reject({})
+        });
 
+        // 该单元内触发
+        await pin.dispatchAsync('eventName', {});
+
+        // 全局触发
+        await dispatchEvent('eventName', {},true);
     ```
   
