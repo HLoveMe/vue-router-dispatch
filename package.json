@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "prod":"webpack --config webpack.config.js",
+    "prod": "webpack --config webpack.config.js",
     "dev": "webpack --config webpack.config.dev.js",
     "build": "tsc --watch false && webpack --config webpack.config.js && webpack --config webpack.config.dev.js"
   },
@@ -25,7 +25,10 @@
   "devDependencies": {
     "@babel/core": "^7.16.12",
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.18.5",
     "@babel/preset-env": "^7.16.11",
+    "@babel/runtime": "^7.18.3",
+    "@babel/runtime-corejs3": "^7.18.3",
     "babel-loader": "^8.2.3",
     "core-js": "^3.22.8",
     "terser-webpack-plugin": "^5.3.1",
@@ -33,7 +36,7 @@
     "typescript": "^4.6.2",
     "vue": "^3.2.37",
     "vue-router": "^4.0.0-0",
-    "webpack-cli": "^4.9.2",
-    "webpack": "^5.67.0"
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.2"
   }
 }

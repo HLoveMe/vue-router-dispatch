@@ -18,26 +18,6 @@ module.exports = {
       exclude: /(node_modules|bower_components|build)/,
       use: {
         loader: "babel-loader",
-        options: {
-          "plugins": [
-            ["@babel/plugin-proposal-optional-chaining"],
-          ],
-          presets: [
-            [
-              "@babel/preset-env", {
-                // 要兼容的目标浏览器
-                targets: {
-                  chrome: '74',
-                  firefox: '60',
-                  safari: '10',
-                  edge: '17'
-                },
-                // 指定corejs版本
-                "corejs": "3",
-              }
-            ]
-          ]
-        }
       },
     },]
   },
@@ -47,10 +27,11 @@ module.exports = {
   resolve: {
     extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
   },
-  externals: {
-    rxjs: 'rxjs',
-    vue: 'vue',
-    "vue-router": 'vue-router',
-  },
+  externals: [
+    "rxjs",
+    'rxjs/operators',
+    "vue",
+    "vue-router",
+  ],
   devtool: 'cheap-module-source-map',
 };
