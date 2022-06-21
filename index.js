@@ -1,7 +1,7 @@
 'use strict';
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = require('./cjs/pin.cjs.prod.js');
+  module.exports = require('./esm/pin.esm.prod.js');
 } else {
-  module.exports = require('./cjs/pin.cjs.dev.js');
+  module.exports = require('./esm/pin.esm.dev.js');
 }

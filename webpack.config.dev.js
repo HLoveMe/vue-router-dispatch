@@ -1,10 +1,10 @@
 const path = require('path');
 module.exports = {
   mode: 'development',
-  entry: path.join(__dirname, "dist", "index.js"),
+  entry: path.join(__dirname, "src", "index.ts"),
   output: {
-    path: path.join(__dirname, "cjs"),
-    filename: 'pin.cjs.dev.js',
+    path: path.join(__dirname, "esm"),
+    filename: 'pin.esm.dev.js',
     library: 'Pin',// 
     libraryTarget: 'umd',
   },
@@ -13,7 +13,7 @@ module.exports = {
       test: /\.ts$/,
       exclude: /node_modules/,
       use: ['ts-loader']
-    }, {
+    },{
       test: /\.(js|jsx)$/,
       exclude: /(node_modules|bower_components|build)/,
       use: {

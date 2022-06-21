@@ -1,13 +1,12 @@
 {
   "name": "vue-router-dispatch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "\"# vue-router-dispatch\"",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc",
     "prod": "webpack --config webpack.config.js",
     "dev": "webpack --config webpack.config.dev.js",
-    "build": "tsc --watch false && webpack --config webpack.config.js && webpack --config webpack.config.dev.js"
+    "build": "webpack --config webpack.config.js && webpack --config webpack.config.dev.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +21,13 @@
   "dependencies": {
     "rxjs": "^7.5.5"
   },
+  "files":[
+    "esm",
+    "index.js",
+    "index.d.ts",
+    "README.md",
+    "src"
+  ],
   "devDependencies": {
     "@babel/core": "^7.16.12",
     "@babel/plugin-transform-runtime": "^7.18.5",

@@ -2,10 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 module.exports = {
   mode: 'production',
-  entry: path.join(__dirname, "dist", "index.js"),
+  entry: path.join(__dirname, "src", "index.ts"),
   output: {
-    path: path.join(__dirname, "cjs"),
-    filename: 'pin.cjs.prod.js',
+    path: path.join(__dirname, "esm"),
+    filename: 'pin.esm.prod.js',
     library: 'Pin',// 
     libraryTarget: 'umd',
   },
@@ -14,7 +14,7 @@ module.exports = {
       test: /\.ts$/,
       exclude: /node_modules/,
       use: ['ts-loader']
-    }, {
+    },{
       test: /\.(js|jsx)$/,
       exclude: /(node_modules|bower_components|build)/,
       use: {
