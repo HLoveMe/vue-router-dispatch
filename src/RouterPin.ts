@@ -239,16 +239,19 @@ function createPinServer(): PinServer {
           target = args[0] as RouteLocationRaw;
           isAsync = false;
         }
+      } else {
+        target = undefined;
+        isAsync = false;
       }
       let pin: ServerBase | undefined = undefined
       if (!!target === false) pin = Global_Serve;
-      if (target === Global_Serve.router) pin = Global_Serve;
       else {
         const router = Global_Serve.router;
         const { fullPath } = (router as Router).resolve(target as RouteLocationRaw)
         const id = PolySymbol(fullPath)
         pin = ServerMap.get(id);
       }
+
       return new Promise((resolve, reject) => {
         dispatch(pin as ServerBase, {
           type: type,
