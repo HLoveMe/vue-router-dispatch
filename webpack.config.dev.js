@@ -33,5 +33,5 @@ module.exports = {
     "vue",
     "vue-router",
   ],
-  devtool: 'cheap-module-source-map',
+  devtool: 'eval-source-map'
 };
