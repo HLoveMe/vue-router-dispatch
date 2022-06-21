@@ -6,9 +6,13 @@ import { VueRouterPin } from 'vue-router-dispatch';
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [{
-    name:'home',
-    path:'/',
-    component:Home
+    name: 'home',
+    path: '/',
+    component: Home
+  }, {
+    name: 'setting',
+    path: '/setting',
+    component: () => import('./components/Setting.vue')
   }] as RouteRecordRaw[],
 });
 

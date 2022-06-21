@@ -1,34 +1,37 @@
 <template>
-  <div class="container">
-    {{ count }}
-    <br />
-    <div class="button" @click="addCount">Dispatch</div>
-    <br />
-    <div class="button" @click="addGlobalCount">Dispatch Global</div>
+  <div>
+    page: Home
+    <div class="container">
+      {{info}}:{{ count }}
+      <br />
+      <div class="button" @click="addCount">Dispatch</div>
+      <br />
+      <div class="button" @click="goSetting">goSetting</div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { AsyncEvent, useRoutePin,dispatchEvent } from 'vue-router-dispatch';
+import { useRouter } from 'vue-router';
+import { AsyncEvent, useRoutePin, dispatchEvent } from 'vue-router-dispatch';
+const { push } = useRouter();
 const count = ref(0);
+const info = ref('局部派发');
 const { on, dispatch } = useRoutePin();
 on('add', (arg: AsyncEvent) => {
   const { data } = arg;
   count.value = data.count;
+  info.value = data.info || "11111";
 });
 const addCount = () => {
-  dispatch('add', { count: count.value + 1 });
+  dispatch('add', { count: count.value + 1 ,info:"局部派发" });
 };
-
-const addGlobalCount = ()=>{
-  debugger
-  dispatchEvent('add', { count: count.value + 1 });
-}
+const goSetting = () => push('setting');
 </script>
 
 <style scoped>
-.container{
+.container {
   display: flex;
   flex-direction: column;
   justify-content: center;

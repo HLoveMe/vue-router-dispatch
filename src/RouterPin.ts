@@ -227,7 +227,7 @@ function createPinServer(): PinServer {
     dispatch: (type: string, data: any, ...args: any[]) => {
       let isAsync: boolean = false;
       let target: RouteLocationRaw | undefined = undefined;
-      args = args.filter($1 => !!$1 === true)
+      args = args.filter($1 => $1 !== undefined)
       if (args.length === 2) {
         isAsync = args[0] as boolean;
         target = args[1] as RouteLocationRaw;
