@@ -68,7 +68,9 @@
     // 事件派发方式1
     dispatch('eventName', {});
     </script>
-
+    // 统一导航路由下的组件
+    const { dispatch } = useRoutePin();
+    dispatch('eventName')
     // 整个应用
     import { dispatchEvent } from 'vue-router-dispatch';
     事件派发方式2
