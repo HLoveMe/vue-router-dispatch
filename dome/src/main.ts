@@ -3,6 +3,8 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import Home from './components/Main.vue'
 import App from './App.vue'
 import { VueRouterPin } from 'vue-router-dispatch';
+import { createSafe } from 'safe-object';
+import { isNumber } from 'safe-object/operators'
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [{

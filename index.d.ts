@@ -49,7 +49,7 @@ export type BasePin = {
   on(type: string | RegExp, callback: EventCallBack): Clear;
   onBehavior(type: string | RegExp, callback: EventCallBack): Clear; // 容许接受上一个消息
   once(type: string | RegExp, callback: EventCallBack): Clear;
-  onError(callback: (error: Error) => void): void;
+  onError(callback: (error: Error) => void): Clear;
 };
 
 export type RoutePin = Merge<

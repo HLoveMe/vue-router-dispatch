@@ -1,21 +1,13 @@
-/*
- * ATTENTION: An "eval-source-map" devtool has been used.
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("vue-router"), require("rxjs"), require("rxjs/operators"), require("vue"));
+		module.exports = factory(require("rxjs"), require("rxjs/operators"), require("vue"), require("vue-router"));
 	else if(typeof define === 'function' && define.amd)
-		define(["vue-router", "rxjs", "rxjs/operators", "vue"], factory);
+		define(["rxjs", "rxjs/operators", "vue", "vue-router"], factory);
 	else if(typeof exports === 'object')
-		exports["Pin"] = factory(require("vue-router"), require("rxjs"), require("rxjs/operators"), require("vue"));
+		exports["Pin"] = factory(require("rxjs"), require("rxjs/operators"), require("vue"), require("vue-router"));
 	else
-		root["Pin"] = factory(root["vue-router"], root["rxjs"], root["rxjs/operators"], root["vue"]);
-})(self, (__WEBPACK_EXTERNAL_MODULE_vue_router__, __WEBPACK_EXTERNAL_MODULE_rxjs__, __WEBPACK_EXTERNAL_MODULE_rxjs_operators__, __WEBPACK_EXTERNAL_MODULE_vue__) => {
+		root["Pin"] = factory(root["rxjs"], root["rxjs/operators"], root["vue"], root["vue-router"]);
+})(self, (__WEBPACK_EXTERNAL_MODULE_rxjs__, __WEBPACK_EXTERNAL_MODULE_rxjs_operators__, __WEBPACK_EXTERNAL_MODULE_vue__, __WEBPACK_EXTERNAL_MODULE_vue_router__) => {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -24,9 +16,282 @@ return /******/ (() => { // webpackBootstrap
 /*!**************************!*\
   !*** ./src/RouterPin.ts ***!
   \**************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"createRxFunc\": () => (/* binding */ createRxFunc),\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ \"rxjs\");\n/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(rxjs__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ \"rxjs/operators\");\n/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ \"vue-router\");\n/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_router__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _initParams__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./initParams */ \"./src/initParams.ts\");\n/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ \"vue\");\n/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_4__);\n\r\n\r\n\r\n\r\n\r\nconst getCurrentServer = (current) => {\r\n    var result = {};\r\n    const { fullPath } = current;\r\n    const id = (0,_initParams__WEBPACK_IMPORTED_MODULE_3__.PolySymbol)(fullPath);\r\n    const server = _initParams__WEBPACK_IMPORTED_MODULE_3__.ServerMap.get(id);\r\n    if (server) {\r\n        result = server;\r\n    }\r\n    else {\r\n        result.id = (0,_initParams__WEBPACK_IMPORTED_MODULE_3__.PolySymbol)(current.fullPath);\r\n        result.route = current;\r\n        result.children = [];\r\n        result.clearSubs = [];\r\n        result.channelCenter = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(_initParams__WEBPACK_IMPORTED_MODULE_3__.initEvent);\r\n    }\r\n    return result;\r\n};\r\nconst isEventType = (event, type) => {\r\n    if (type instanceof RegExp) {\r\n        if (typeof event.type !== 'string')\r\n            return false;\r\n        return type.test(event.type);\r\n    }\r\n    else {\r\n        return event.type === type;\r\n    }\r\n};\r\nconst currentServer = (0,vue__WEBPACK_IMPORTED_MODULE_4__.shallowRef)(_initParams__WEBPACK_IMPORTED_MODULE_3__.SHALL_CURRENT);\r\nfunction removeSub(tran, sub) {\r\n    sub.unsubscribe();\r\n    const index = tran.clearSubs.indexOf(sub);\r\n    index > -1 && (tran.clearSubs = tran.clearSubs.splice(index, 1));\r\n}\r\nfunction dispatch(tran, event, isAsync = false) {\r\n    const { channelCenter, id, errorChanel } = tran;\r\n    const isRoot = id === _initParams__WEBPACK_IMPORTED_MODULE_3__.GlobalRServerKey;\r\n    if (isAsync === false) {\r\n        channelCenter.next(event);\r\n        isRoot && tran.children.forEach(child => child.channelCenter.next(event));\r\n        return;\r\n    }\r\n    ;\r\n    const { resolve, reject } = event;\r\n    const root = (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.from)(new Promise((resolve, reject) => {\r\n        channelCenter.next({\r\n            ...event,\r\n            resolve,\r\n            reject,\r\n        });\r\n    }));\r\n    const operators = tran\r\n        .children\r\n        .map($1 => (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.from)(new Promise((resolve, reject) => {\r\n        $1.channelCenter.next({\r\n            ...event,\r\n            resolve,\r\n            reject,\r\n        });\r\n    })));\r\n    (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.zip)(root, ...operators).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.takeLast)(1)).subscribe({\r\n        next: (promises) => resolve(promises),\r\n        complete: () => { },\r\n        error: (error) => {\r\n            reject(error);\r\n            errorChanel.next(error);\r\n        }\r\n    });\r\n}\r\nfunction on(tran, type, callback) {\r\n    const { channelCenter, errorChanel } = tran;\r\n    const sub = channelCenter\r\n        .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.filter)((event) => isEventType(event, type) || event.type === _initParams__WEBPACK_IMPORTED_MODULE_3__.initEventKey), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.bufferCount)(2, 1), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(events => events[1]))\r\n        .subscribe({\r\n        complete: () => removeSub(tran, sub),\r\n        next: event => callback && callback(event),\r\n        error: (error) => errorChanel.next(error)\r\n    });\r\n    tran.clearSubs.push(sub);\r\n    return { close: () => removeSub(tran, sub) };\r\n}\r\nfunction once(tran, type, callback) {\r\n    const { channelCenter, errorChanel } = tran;\r\n    const sub = channelCenter\r\n        .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.filter)((event) => isEventType(event, type) || event.type === _initParams__WEBPACK_IMPORTED_MODULE_3__.initEventKey), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.bufferCount)(2, 1), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(events => events[1]), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.take)(1))\r\n        .subscribe({\r\n        complete: () => removeSub(tran, sub),\r\n        next: event => callback && callback(event),\r\n        error: (error) => errorChanel.next(error)\r\n    });\r\n    tran.clearSubs.push(sub);\r\n    return { close: () => removeSub(tran, sub) };\r\n}\r\nfunction onBehavior(tran, type, callback) {\r\n    const { channelCenter, errorChanel } = tran;\r\n    const sub = channelCenter\r\n        .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.filter)(event => isEventType(event, type) && event.type !== _initParams__WEBPACK_IMPORTED_MODULE_3__.initEventKey))\r\n        .subscribe({\r\n        complete: () => removeSub(tran, sub),\r\n        next: event => callback && callback(event),\r\n        error: (error) => errorChanel.next(error)\r\n    });\r\n    tran.clearSubs.push(sub);\r\n    return { close: () => removeSub(tran, sub) };\r\n}\r\nfunction onError(tran, callback) {\r\n    const { errorChanel } = tran;\r\n    const sub = errorChanel\r\n        .subscribe({\r\n        complete: () => {\r\n            removeSub(tran, sub);\r\n        },\r\n        next: error => {\r\n            callback && callback(error);\r\n        },\r\n    });\r\n    tran.clearSubs.push(sub);\r\n}\r\nconst createRxFunc = (pin, source) => {\r\n    const router = _initParams__WEBPACK_IMPORTED_MODULE_3__.Global_Serve.router;\r\n    // 只有router 可以指定在哪个pin触发\r\n    const getDispatchPin = (route) => {\r\n        if (!!route === false)\r\n            return pin;\r\n        const isRoot = pin.id === _initParams__WEBPACK_IMPORTED_MODULE_3__.GlobalRServerKey;\r\n        if (!isRoot)\r\n            return pin;\r\n        const { fullPath } = router.resolve(route);\r\n        const id = (0,_initParams__WEBPACK_IMPORTED_MODULE_3__.PolySymbol)(fullPath);\r\n        const target = _initParams__WEBPACK_IMPORTED_MODULE_3__.ServerMap.get(id);\r\n        return target || pin;\r\n    };\r\n    return {\r\n        dispatch: (type, data, route) => {\r\n            dispatch(getDispatchPin(route), {\r\n                type,\r\n                data,\r\n                source,\r\n                resolve: () => { },\r\n                reject: () => { },\r\n            });\r\n        },\r\n        dispatchAsync: (type, data, route) => {\r\n            return new Promise((resolve, reject) => {\r\n                dispatch(getDispatchPin(route), {\r\n                    type,\r\n                    data,\r\n                    source,\r\n                    resolve: (data) => resolve(data),\r\n                    reject: (error) => reject(error),\r\n                }, true);\r\n            });\r\n        },\r\n        on: (type, callback) => {\r\n            return on(pin, type, callback);\r\n        },\r\n        onBehavior: (type, callback) => {\r\n            return onBehavior(pin, type, callback);\r\n        },\r\n        once: (type, callback) => {\r\n            return once(pin, type, callback);\r\n        },\r\n        onError: (callback) => {\r\n            onError(pin, callback);\r\n        }\r\n    };\r\n};\r\nfunction createPinServer() {\r\n    const init = (router) => {\r\n        router.beforeEach((to, from) => {\r\n            const serve = getCurrentServer(to);\r\n            if (!_initParams__WEBPACK_IMPORTED_MODULE_3__.ServerMap.has(serve.id))\r\n                _initParams__WEBPACK_IMPORTED_MODULE_3__.Global_Serve.children.push(serve);\r\n            _initParams__WEBPACK_IMPORTED_MODULE_3__.ServerMap.set(serve.id, serve);\r\n            currentServer.value = serve;\r\n        });\r\n        router.afterEach((to, from) => {\r\n            currentServer.value = getCurrentServer(to);\r\n        });\r\n        _initParams__WEBPACK_IMPORTED_MODULE_3__.Global_Serve.channelCenter = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(_initParams__WEBPACK_IMPORTED_MODULE_3__.initEvent);\r\n        _initParams__WEBPACK_IMPORTED_MODULE_3__.Global_Serve.router = router;\r\n        _initParams__WEBPACK_IMPORTED_MODULE_3__.ServerMap.set(_initParams__WEBPACK_IMPORTED_MODULE_3__.Global_Serve.id, _initParams__WEBPACK_IMPORTED_MODULE_3__.Global_Serve);\r\n        currentServer.value = _initParams__WEBPACK_IMPORTED_MODULE_3__.Global_Serve;\r\n    };\r\n    const Server = {\r\n        install(app) {\r\n            init(app.config.globalProperties.$router);\r\n            app.provide(_initParams__WEBPACK_IMPORTED_MODULE_3__.GlobalRServerKey, _initParams__WEBPACK_IMPORTED_MODULE_3__.Global_Serve);\r\n            app.provide(_initParams__WEBPACK_IMPORTED_MODULE_3__.CurrentRServerKey, currentServer);\r\n            app.config.globalProperties.$rs = (type, data) => {\r\n                dispatch(currentServer.value, {\r\n                    type,\r\n                    data,\r\n                    source: (0,vue_router__WEBPACK_IMPORTED_MODULE_2__.useRoute)(),\r\n                    resolve: () => { },\r\n                    reject: () => { },\r\n                });\r\n            };\r\n        },\r\n        dispatch: (type, data, ...args) => {\r\n            let isAsync = false;\r\n            let target = undefined;\r\n            args = args.filter($1 => $1 !== undefined);\r\n            if (args.length === 2) {\r\n                isAsync = args[0];\r\n                target = args[1];\r\n            }\r\n            else if (args.length === 1) {\r\n                if (typeof args[0] === 'boolean') {\r\n                    isAsync = args[0];\r\n                    target = undefined;\r\n                }\r\n                else {\r\n                    target = args[0];\r\n                    isAsync = false;\r\n                }\r\n            }\r\n            else {\r\n                target = undefined;\r\n                isAsync = false;\r\n            }\r\n            let pin = undefined;\r\n            if (!!target === false)\r\n                pin = _initParams__WEBPACK_IMPORTED_MODULE_3__.Global_Serve;\r\n            else {\r\n                const router = _initParams__WEBPACK_IMPORTED_MODULE_3__.Global_Serve.router;\r\n                const { fullPath } = router.resolve(target);\r\n                const id = (0,_initParams__WEBPACK_IMPORTED_MODULE_3__.PolySymbol)(fullPath);\r\n                pin = _initParams__WEBPACK_IMPORTED_MODULE_3__.ServerMap.get(id);\r\n            }\r\n            return new Promise((resolve, reject) => {\r\n                dispatch(pin, {\r\n                    type: type,\r\n                    data: data,\r\n                    source: undefined,\r\n                    resolve: isAsync ? resolve : _initParams__WEBPACK_IMPORTED_MODULE_3__.noop,\r\n                    reject: isAsync ? reject : _initParams__WEBPACK_IMPORTED_MODULE_3__.noop,\r\n                }, !!isAsync);\r\n                if (!isAsync)\r\n                    resolve(null);\r\n            });\r\n        }\r\n    };\r\n    return Server;\r\n}\r\nconst Server = createPinServer();\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Server);\r\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvUm91dGVyUGluLnRzLmpzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7O0FBQTRFO0FBQ0Y7QUFDZTtBQUM2RDtBQUVoSDtBQUV0QyxNQUFNLGdCQUFnQixHQUFHLENBQUMsT0FBZ0MsRUFBRSxFQUFFO0lBQzVELElBQUksTUFBTSxHQUFnQixFQUFpQixDQUFDO0lBQzVDLE1BQU0sRUFBRSxRQUFRLEVBQUUsR0FBRyxPQUFPLENBQUM7SUFDN0IsTUFBTSxFQUFFLEdBQUcsdURBQVUsQ0FBQyxRQUFRLENBQUM7SUFDL0IsTUFBTSxNQUFNLEdBQUcsc0RBQWEsQ0FBQyxFQUFFLENBQUMsQ0FBQztJQUNqQyxJQUFJLE1BQU0sRUFBRTtRQUNWLE1BQU0sR0FBRyxNQUFxQixDQUFDO0tBQ2hDO1NBQU07UUFDTCxNQUFNLENBQUMsRUFBRSxHQUFHLHVEQUFVLENBQUMsT0FBTyxDQUFDLFFBQVEsQ0FBQyxDQUFDO1FBQ3pDLE1BQU0sQ0FBQyxLQUFLLEdBQUcsT0FBTyxDQUFDO1FBQ3ZCLE1BQU0sQ0FBQyxRQUFRLEdBQUcsRUFBRSxDQUFDO1FBQ3JCLE1BQU0sQ0FBQyxTQUFTLEdBQUcsRUFBRSxDQUFDO1FBQ3RCLE1BQU0sQ0FBQyxhQUFhLEdBQUcsSUFBSSxpREFBZSxDQUFhLGtEQUFTLENBQUMsQ0FBQztLQUNuRTtJQUNELE9BQU8sTUFBTSxDQUFDO0FBQ2hCLENBQUM7QUFDRCxNQUFNLFdBQVcsR0FBRyxDQUFDLEtBQWlCLEVBQUUsSUFBcUIsRUFBVyxFQUFFO0lBQ3hFLElBQUksSUFBSSxZQUFZLE1BQU0sRUFBRTtRQUMxQixJQUFJLE9BQU8sS0FBSyxDQUFDLElBQUksS0FBSyxRQUFRO1lBQUUsT0FBTyxLQUFLO1FBQ2hELE9BQU8sSUFBSSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBYyxDQUFDLENBQUM7S0FDeEM7U0FBTTtRQUNMLE9BQU8sS0FBSyxDQUFDLElBQUksS0FBSyxJQUFJLENBQUM7S0FDNUI7QUFDSCxDQUFDLENBQUM7QUFDRixNQUFNLGFBQWEsR0FBRywrQ0FBVSxDQUFDLHNEQUFhLENBQUMsQ0FBQztBQUVoRCxTQUFTLFNBQVMsQ0FBQyxJQUFnQixFQUFFLEdBQWlCO0lBQ3BELEdBQUcsQ0FBQyxXQUFXLEVBQUUsQ0FBQztJQUNsQixNQUFNLEtBQUssR0FBRyxJQUFJLENBQUMsU0FBUyxDQUFDLE9BQU8sQ0FBQyxHQUFHLENBQUMsQ0FBQztJQUMxQyxLQUFLLEdBQUcsQ0FBQyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsU0FBUyxHQUFHLElBQUksQ0FBQyxTQUFTLENBQUMsTUFBTSxDQUFDLEtBQUssRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFDO0FBQ25FLENBQUM7QUFFRCxTQUFTLFFBQVEsQ0FBQyxJQUFnQixFQUFFLEtBQWlCLEVBQUUsVUFBbUIsS0FBSztJQUM3RSxNQUFNLEVBQUUsYUFBYSxFQUFFLEVBQUUsRUFBRSxXQUFXLEVBQUUsR0FBRyxJQUFJLENBQUM7SUFDaEQsTUFBTSxNQUFNLEdBQUcsRUFBRSxLQUFLLHlEQUFnQixDQUFDO0lBQ3ZDLElBQUksT0FBTyxLQUFLLEtBQUssRUFBRTtRQUNyQixhQUFhLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDO1FBQzFCLE1BQU0sSUFBSSxJQUFJLENBQUMsUUFBUSxDQUFDLE9BQU8sQ0FBQyxLQUFLLENBQUMsRUFBRSxDQUFDLEtBQUssQ0FBQyxhQUFhLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDO1FBQ3pFLE9BQU07S0FDUDtJQUFBLENBQUM7SUFDRixNQUFNLEVBQUUsT0FBTyxFQUFFLE1BQU0sRUFBRSxHQUFHLEtBQUssQ0FBQztJQUNsQyxNQUFNLElBQUksR0FBRywwQ0FBSSxDQUNmLElBQUksT0FBTyxDQUNULENBQUMsT0FBTyxFQUFFLE1BQU0sRUFBRSxFQUFFO1FBQ2xCLGFBQWEsQ0FBQyxJQUFJLENBQUM7WUFDakIsR0FBRyxLQUFLO1lBQ1IsT0FBTztZQUNQLE1BQU07U0FDUCxDQUFDLENBQUM7SUFDTCxDQUFDLENBQUMsQ0FBQyxDQUFDO0lBQ1IsTUFBTSxTQUFTLEdBQXNCLElBQUk7U0FDdEMsUUFBUTtTQUNSLEdBQUcsQ0FDRixFQUFFLENBQUMsRUFBRSxDQUFDLDBDQUFJLENBQ1IsSUFBSSxPQUFPLENBQUMsQ0FBQyxPQUFPLEVBQUUsTUFBTSxFQUFFLEVBQUU7UUFDOUIsRUFBRSxDQUFDLGFBQWEsQ0FBQyxJQUFJLENBQUM7WUFDcEIsR0FBRyxLQUFLO1lBQ1IsT0FBTztZQUNQLE1BQU07U0FDUCxDQUFDO0lBQ0osQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDO0lBQ1gseUNBQUcsQ0FDRCxJQUFJLEVBQ0osR0FBRyxTQUFTLENBQ2IsQ0FBQyxJQUFJLENBQ0osd0RBQVEsQ0FBQyxDQUFDLENBQUMsQ0FDWixDQUFDLFNBQVMsQ0FBQztRQUNWLElBQUksRUFBRSxDQUFDLFFBQW9CLEVBQUUsRUFBRSxDQUFDLE9BQU8sQ0FBQyxRQUFRLENBQUM7UUFDakQsUUFBUSxFQUFFLEdBQUcsRUFBRSxHQUFHLENBQUM7UUFDbkIsS0FBSyxFQUFFLENBQUMsS0FBWSxFQUFFLEVBQUU7WUFDdEIsTUFBTSxDQUFDLEtBQUssQ0FBQyxDQUFDO1lBQ2QsV0FBVyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQztRQUMxQixDQUFDO0tBQ0YsQ0FBQztBQUNKLENBQUM7QUFHRCxTQUFTLEVBQUUsQ0FBQyxJQUFnQixFQUFFLElBQXFCLEVBQUUsUUFBdUI7SUFDMUUsTUFBTSxFQUFFLGFBQWEsRUFBRSxXQUFXLEVBQUUsR0FBRyxJQUFJLENBQUM7SUFDNUMsTUFBTSxHQUFHLEdBQWlCLGFBQWE7U0FDcEMsSUFBSSxDQUNILHNEQUFNLENBQUMsQ0FBQyxLQUFpQixFQUFFLEVBQUUsQ0FBQyxXQUFXLENBQUMsS0FBSyxFQUFFLElBQUksQ0FBQyxJQUFJLEtBQUssQ0FBQyxJQUFJLEtBQUsscURBQVksQ0FBQyxFQUN0RiwyREFBVyxDQUFDLENBQUMsRUFBRSxDQUFDLENBQUMsRUFDakIsbURBQUcsQ0FBQyxNQUFNLENBQUMsRUFBRSxDQUFDLE1BQU0sQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUN6QjtTQUNBLFNBQVMsQ0FBQztRQUNULFFBQVEsRUFBRSxHQUFHLEVBQUUsQ0FBQyxTQUFTLENBQUMsSUFBSSxFQUFFLEdBQUcsQ0FBQztRQUNwQyxJQUFJLEVBQUUsS0FBSyxDQUFDLEVBQUUsQ0FBQyxRQUFRLElBQUksUUFBUSxDQUFDLEtBQUssQ0FBQztRQUMxQyxLQUFLLEVBQUUsQ0FBQyxLQUFZLEVBQUUsRUFBRSxDQUFDLFdBQVcsQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDO0tBQ2pELENBQUM7SUFDSixJQUFJLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsQ0FBQztJQUN6QixPQUFPLEVBQUUsS0FBSyxFQUFFLEdBQUcsRUFBRSxDQUFDLFNBQVMsQ0FBQyxJQUFJLEVBQUUsR0FBRyxDQUFDLEVBQUU7QUFDOUMsQ0FBQztBQUVELFNBQVMsSUFBSSxDQUFDLElBQWdCLEVBQUUsSUFBcUIsRUFBRSxRQUF1QjtJQUM1RSxNQUFNLEVBQUUsYUFBYSxFQUFFLFdBQVcsRUFBRSxHQUFHLElBQUksQ0FBQztJQUM1QyxNQUFNLEdBQUcsR0FBaUIsYUFBYTtTQUNwQyxJQUFJLENBQ0gsc0RBQU0sQ0FBQyxDQUFDLEtBQWlCLEVBQUUsRUFBRSxDQUFDLFdBQVcsQ0FBQyxLQUFLLEVBQUUsSUFBSSxDQUFDLElBQUksS0FBSyxDQUFDLElBQUksS0FBSyxxREFBWSxDQUFDLEVBQ3RGLDJEQUFXLENBQUMsQ0FBQyxFQUFFLENBQUMsQ0FBQyxFQUNqQixtREFBRyxDQUFDLE1BQU0sQ0FBQyxFQUFFLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQyxDQUFDLEVBQ3hCLG9EQUFJLENBQUMsQ0FBQyxDQUFDLENBQ1I7U0FDQSxTQUFTLENBQUM7UUFDVCxRQUFRLEVBQUUsR0FBRyxFQUFFLENBQUMsU0FBUyxDQUFDLElBQUksRUFBRSxHQUFHLENBQUM7UUFDcEMsSUFBSSxFQUFFLEtBQUssQ0FBQyxFQUFFLENBQUMsUUFBUSxJQUFJLFFBQVEsQ0FBQyxLQUFLLENBQUM7UUFDMUMsS0FBSyxFQUFFLENBQUMsS0FBWSxFQUFFLEVBQUUsQ0FBQyxXQUFXLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQztLQUNqRCxDQUFDO0lBQ0osSUFBSSxDQUFDLFNBQVMsQ0FBQyxJQUFJLENBQUMsR0FBRyxDQUFDLENBQUM7SUFDekIsT0FBTyxFQUFFLEtBQUssRUFBRSxHQUFHLEVBQUUsQ0FBQyxTQUFTLENBQUMsSUFBSSxFQUFFLEdBQUcsQ0FBQyxFQUFFO0FBQzlDLENBQUM7QUFDRCxTQUFTLFVBQVUsQ0FBQyxJQUFnQixFQUFFLElBQXFCLEVBQUUsUUFBdUI7SUFDbEYsTUFBTSxFQUFFLGFBQWEsRUFBRSxXQUFXLEVBQUUsR0FBRyxJQUFJLENBQUM7SUFDNUMsTUFBTSxHQUFHLEdBQWlCLGFBQWE7U0FDcEMsSUFBSSxDQUNILHNEQUFNLENBQUMsS0FBSyxDQUFDLEVBQUUsQ0FBQyxXQUFXLENBQUMsS0FBSyxFQUFFLElBQUksQ0FBQyxJQUFJLEtBQUssQ0FBQyxJQUFJLEtBQUsscURBQVksQ0FBQyxDQUN6RTtTQUNBLFNBQVMsQ0FBQztRQUNULFFBQVEsRUFBRSxHQUFHLEVBQUUsQ0FBQyxTQUFTLENBQUMsSUFBSSxFQUFFLEdBQUcsQ0FBQztRQUNwQyxJQUFJLEVBQUUsS0FBSyxDQUFDLEVBQUUsQ0FBQyxRQUFRLElBQUksUUFBUSxDQUFDLEtBQUssQ0FBQztRQUMxQyxLQUFLLEVBQUUsQ0FBQyxLQUFZLEVBQUUsRUFBRSxDQUFDLFdBQVcsQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDO0tBQ2pELENBQUM7SUFDSixJQUFJLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsQ0FBQztJQUN6QixPQUFPLEVBQUUsS0FBSyxFQUFFLEdBQUcsRUFBRSxDQUFDLFNBQVMsQ0FBQyxJQUFJLEVBQUUsR0FBRyxDQUFDLEVBQUU7QUFDOUMsQ0FBQztBQUNELFNBQVMsT0FBTyxDQUFDLElBQWdCLEVBQUUsUUFBa0I7SUFDbkQsTUFBTSxFQUFFLFdBQVcsRUFBRSxHQUFHLElBQUksQ0FBQztJQUM3QixNQUFNLEdBQUcsR0FBRyxXQUFXO1NBQ3BCLFNBQVMsQ0FBQztRQUNULFFBQVEsRUFBRSxHQUFHLEVBQUU7WUFDYixTQUFTLENBQUMsSUFBSSxFQUFFLEdBQUcsQ0FBQyxDQUFDO1FBQ3ZCLENBQUM7UUFDRCxJQUFJLEVBQUUsS0FBSyxDQUFDLEVBQUU7WUFDWixRQUFRLElBQUksUUFBUSxDQUFDLEtBQUssQ0FBQyxDQUFDO1FBQzlCLENBQUM7S0FDRixDQUFDO0lBQ0osSUFBSSxDQUFDLFNBQVMsQ0FBQyxJQUFJLENBQUMsR0FBRyxDQUFDLENBQUM7QUFDM0IsQ0FBQztBQUVNLE1BQU0sWUFBWSxHQUFHLENBQUMsR0FBZSxFQUFFLE1BQXFCLEVBQUUsRUFBRTtJQUNyRSxNQUFNLE1BQU0sR0FBRyw0REFBbUIsQ0FBQztJQUNuQyx3QkFBd0I7SUFDeEIsTUFBTSxjQUFjLEdBQUcsQ0FBQyxLQUF3QixFQUFjLEVBQUU7UUFDOUQsSUFBSSxDQUFDLENBQUMsS0FBSyxLQUFLLEtBQUs7WUFBRSxPQUFPLEdBQUc7UUFDakMsTUFBTSxNQUFNLEdBQUcsR0FBRyxDQUFDLEVBQUUsS0FBSyx5REFBZ0IsQ0FBQztRQUMzQyxJQUFJLENBQUMsTUFBTTtZQUFFLE9BQU8sR0FBRyxDQUFDO1FBQ3hCLE1BQU0sRUFBRSxRQUFRLEVBQUUsR0FBSSxNQUFpQixDQUFDLE9BQU8sQ0FBQyxLQUF5QixDQUFDO1FBQzFFLE1BQU0sRUFBRSxHQUFHLHVEQUFVLENBQUMsUUFBUSxDQUFDO1FBQy9CLE1BQU0sTUFBTSxHQUFHLHNEQUFhLENBQUMsRUFBRSxDQUFDLENBQUM7UUFDakMsT0FBTyxNQUFNLElBQUksR0FBRyxDQUFDO0lBQ3ZCLENBQUM7SUFDRCxPQUFPO1FBQ0wsUUFBUSxFQUFFLENBQUMsSUFBWSxFQUFFLElBQVMsRUFBRSxLQUF3QixFQUFFLEVBQUU7WUFDOUQsUUFBUSxDQUFDLGNBQWMsQ0FBQyxLQUFLLENBQUMsRUFBRTtnQkFDOUIsSUFBSTtnQkFDSixJQUFJO2dCQUNKLE1BQU07Z0JBQ04sT0FBTyxFQUFFLEdBQUcsRUFBRSxHQUFHLENBQUM7Z0JBQ2xCLE1BQU0sRUFBRSxHQUFHLEVBQUUsR0FBRyxDQUFDO2FBQ2xCLENBQUM7UUFDSixDQUFDO1FBQ0QsYUFBYSxFQUFFLENBQUMsSUFBWSxFQUFFLElBQVMsRUFBRSxLQUF3QixFQUFFLEVBQUU7WUFDbkUsT0FBTyxJQUFJLE9BQU8sQ0FBQyxDQUFDLE9BQU8sRUFBRSxNQUFNLEVBQUUsRUFBRTtnQkFDckMsUUFBUSxDQUFDLGNBQWMsQ0FBQyxLQUFLLENBQUMsRUFBRTtvQkFDOUIsSUFBSTtvQkFDSixJQUFJO29CQUNKLE1BQU07b0JBQ04sT0FBTyxFQUFFLENBQUMsSUFBUyxFQUFFLEVBQUUsQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDO29CQUNyQyxNQUFNLEVBQUUsQ0FBQyxLQUFZLEVBQUUsRUFBRSxDQUFDLE1BQU0sQ0FBQyxLQUFLLENBQUM7aUJBQ3hDLEVBQUUsSUFBSSxDQUFDO1lBQ1YsQ0FBQyxDQUFDO1FBQ0osQ0FBQztRQUNELEVBQUUsRUFBRSxDQUFDLElBQVksRUFBRSxRQUF1QixFQUFFLEVBQUU7WUFDNUMsT0FBTyxFQUFFLENBQUMsR0FBRyxFQUFFLElBQUksRUFBRSxRQUFRLENBQUMsQ0FBQztRQUNqQyxDQUFDO1FBQ0QsVUFBVSxFQUFFLENBQUMsSUFBWSxFQUFFLFFBQXVCLEVBQUUsRUFBRTtZQUNwRCxPQUFPLFVBQVUsQ0FBQyxHQUFHLEVBQUUsSUFBSSxFQUFFLFFBQVEsQ0FBQyxDQUFDO1FBQ3pDLENBQUM7UUFDRCxJQUFJLEVBQUUsQ0FBQyxJQUFZLEVBQUUsUUFBdUIsRUFBRSxFQUFFO1lBQzlDLE9BQU8sSUFBSSxDQUFDLEdBQUcsRUFBRSxJQUFJLEVBQUUsUUFBUSxDQUFDLENBQUM7UUFDbkMsQ0FBQztRQUNELE9BQU8sRUFBRSxDQUFDLFFBQWtCLEVBQUUsRUFBRTtZQUM5QixPQUFPLENBQUMsR0FBRyxFQUFFLFFBQVEsQ0FBQyxDQUFDO1FBQ3pCLENBQUM7S0FDRjtBQUNILENBQUM7QUFFRCxTQUFTLGVBQWU7SUFDdEIsTUFBTSxJQUFJLEdBQUcsQ0FBQyxNQUFjLEVBQUUsRUFBRTtRQUM5QixNQUFNLENBQUMsVUFBVSxDQUFDLENBQUMsRUFBMkIsRUFBRSxJQUE2QixFQUFFLEVBQUU7WUFDL0UsTUFBTSxLQUFLLEdBQWUsZ0JBQWdCLENBQUMsRUFBRSxDQUFDLENBQUM7WUFDL0MsSUFBSSxDQUFDLHNEQUFhLENBQUMsS0FBSyxDQUFDLEVBQUUsQ0FBQztnQkFBRSxtRUFBMEIsQ0FBQyxLQUFLLENBQUMsQ0FBQztZQUNoRSxzREFBYSxDQUFDLEtBQUssQ0FBQyxFQUFFLEVBQUUsS0FBSyxDQUFDLENBQUM7WUFDL0IsYUFBYSxDQUFDLEtBQUssR0FBRyxLQUFLLENBQUM7UUFDOUIsQ0FBQyxDQUFDO1FBQ0YsTUFBTSxDQUFDLFNBQVMsQ0FBQyxDQUFDLEVBQTJCLEVBQUUsSUFBNkIsRUFBRSxFQUFFO1lBQzlFLGFBQWEsQ0FBQyxLQUFLLEdBQUcsZ0JBQWdCLENBQUMsRUFBRSxDQUFDO1FBQzVDLENBQUMsQ0FBQztRQUVGLG1FQUEwQixHQUFHLElBQUksaURBQWUsQ0FBYSxrREFBUyxDQUFDLENBQUM7UUFDeEUsNERBQW1CLEdBQUcsTUFBTSxDQUFDO1FBQzdCLHNEQUFhLENBQUMsd0RBQWUsRUFBRSxxREFBWSxDQUFDLENBQUM7UUFDN0MsYUFBYSxDQUFDLEtBQUssR0FBRyxxREFBWSxDQUFDO0lBQ3JDLENBQUM7SUFDRCxNQUFNLE1BQU0sR0FBRztRQUNiLE9BQU8sQ0FBQyxHQUFRO1lBQ2QsSUFBSSxDQUFDLEdBQUcsQ0FBQyxNQUFNLENBQUMsZ0JBQWdCLENBQUMsT0FBTyxDQUFDO1lBQ3pDLEdBQUcsQ0FBQyxPQUFPLENBQUMseURBQWdCLEVBQUUscURBQVksQ0FBQyxDQUFDO1lBQzVDLEdBQUcsQ0FBQyxPQUFPLENBQUMsMERBQWlCLEVBQUUsYUFBYSxDQUFDLENBQUM7WUFDOUMsR0FBRyxDQUFDLE1BQU0sQ0FBQyxnQkFBZ0IsQ0FBQyxHQUFHLEdBQUcsQ0FBQyxJQUFZLEVBQUUsSUFBUyxFQUFFLEVBQUU7Z0JBQzVELFFBQVEsQ0FBQyxhQUFhLENBQUMsS0FBSyxFQUFFO29CQUM1QixJQUFJO29CQUNKLElBQUk7b0JBQ0osTUFBTSxFQUFFLG9EQUFRLEVBQUU7b0JBQ2xCLE9BQU8sRUFBRSxHQUFHLEVBQUUsR0FBRyxDQUFDO29CQUNsQixNQUFNLEVBQUUsR0FBRyxFQUFFLEdBQUcsQ0FBQztpQkFDbEIsQ0FBQztZQUNKLENBQUM7UUFDSCxDQUFDO1FBQ0QsUUFBUSxFQUFFLENBQUMsSUFBWSxFQUFFLElBQVMsRUFBRSxHQUFHLElBQVcsRUFBRSxFQUFFO1lBQ3BELElBQUksT0FBTyxHQUFZLEtBQUssQ0FBQztZQUM3QixJQUFJLE1BQU0sR0FBaUMsU0FBUyxDQUFDO1lBQ3JELElBQUksR0FBRyxJQUFJLENBQUMsTUFBTSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFBRSxLQUFLLFNBQVMsQ0FBQztZQUMxQyxJQUFJLElBQUksQ0FBQyxNQUFNLEtBQUssQ0FBQyxFQUFFO2dCQUNyQixPQUFPLEdBQUcsSUFBSSxDQUFDLENBQUMsQ0FBWSxDQUFDO2dCQUM3QixNQUFNLEdBQUcsSUFBSSxDQUFDLENBQUMsQ0FBcUIsQ0FBQzthQUN0QztpQkFBTSxJQUFJLElBQUksQ0FBQyxNQUFNLEtBQUssQ0FBQyxFQUFFO2dCQUM1QixJQUFJLE9BQU8sSUFBSSxDQUFDLENBQUMsQ0FBQyxLQUFLLFNBQVMsRUFBRTtvQkFDaEMsT0FBTyxHQUFHLElBQUksQ0FBQyxDQUFDLENBQVksQ0FBQztvQkFDN0IsTUFBTSxHQUFHLFNBQVM7aUJBQ25CO3FCQUFNO29CQUNMLE1BQU0sR0FBRyxJQUFJLENBQUMsQ0FBQyxDQUFxQixDQUFDO29CQUNyQyxPQUFPLEdBQUcsS0FBSyxDQUFDO2lCQUNqQjthQUNGO2lCQUFNO2dCQUNMLE1BQU0sR0FBRyxTQUFTLENBQUM7Z0JBQ25CLE9BQU8sR0FBRyxLQUFLLENBQUM7YUFDakI7WUFDRCxJQUFJLEdBQUcsR0FBMkIsU0FBUztZQUMzQyxJQUFJLENBQUMsQ0FBQyxNQUFNLEtBQUssS0FBSztnQkFBRSxHQUFHLEdBQUcscURBQVksQ0FBQztpQkFDdEM7Z0JBQ0gsTUFBTSxNQUFNLEdBQUcsNERBQW1CLENBQUM7Z0JBQ25DLE1BQU0sRUFBRSxRQUFRLEVBQUUsR0FBSSxNQUFpQixDQUFDLE9BQU8sQ0FBQyxNQUEwQixDQUFDO2dCQUMzRSxNQUFNLEVBQUUsR0FBRyx1REFBVSxDQUFDLFFBQVEsQ0FBQztnQkFDL0IsR0FBRyxHQUFHLHNEQUFhLENBQUMsRUFBRSxDQUFDLENBQUM7YUFDekI7WUFFRCxPQUFPLElBQUksT0FBTyxDQUFDLENBQUMsT0FBTyxFQUFFLE1BQU0sRUFBRSxFQUFFO2dCQUNyQyxRQUFRLENBQUMsR0FBaUIsRUFBRTtvQkFDMUIsSUFBSSxFQUFFLElBQUk7b0JBQ1YsSUFBSSxFQUFFLElBQUk7b0JBQ1YsTUFBTSxFQUFFLFNBQVM7b0JBQ2pCLE9BQU8sRUFBRSxPQUFPLENBQUMsQ0FBQyxDQUFDLE9BQU8sQ0FBQyxDQUFDLENBQUMsNkNBQUk7b0JBQ2pDLE1BQU0sRUFBRSxPQUFPLENBQUMsQ0FBQyxDQUFDLE1BQU0sQ0FBQyxDQUFDLENBQUMsNkNBQUk7aUJBQ2hDLEVBQUUsQ0FBQyxDQUFDLE9BQU8sQ0FBQztnQkFDYixJQUFJLENBQUMsT0FBTztvQkFBRSxPQUFPLENBQUMsSUFBSSxDQUFDO1lBQzdCLENBQUMsQ0FBQztRQUNKLENBQUM7S0FDRjtJQUNELE9BQU8sTUFBTTtBQUNmLENBQUM7QUFFRCxNQUFNLE1BQU0sR0FBYyxlQUFlLEVBQUUsQ0FBQztBQUU1QyxpRUFBZSxNQUFNLEVBQUMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly9QaW4vLi9zcmMvUm91dGVyUGluLnRzPzA0YjkiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQmVoYXZpb3JTdWJqZWN0LCBmcm9tLCBPYnNlcnZhYmxlLCBTdWJzY3JpcHRpb24sIHppcCB9IGZyb20gXCJyeGpzXCI7XHJcbmltcG9ydCB7IGZpbHRlciwgdGFrZUxhc3QsIHRha2UsIGJ1ZmZlckNvdW50LCBtYXAgfSBmcm9tICdyeGpzL29wZXJhdG9ycyc7XHJcbmltcG9ydCB7IFJvdXRlTG9jYXRpb25Ob3JtYWxpemVkLCBSb3V0ZUxvY2F0aW9uUmF3LCBSb3V0ZXIsIHVzZVJvdXRlIH0gZnJvbSBcInZ1ZS1yb3V0ZXJcIjtcclxuaW1wb3J0IHsgaW5pdEV2ZW50LCBQb2x5U3ltYm9sLCBTZXJ2ZXJNYXAsIFNIQUxMX0NVUlJFTlQsIEdsb2JhbFJTZXJ2ZXJLZXksIGluaXRFdmVudEtleSwgR2xvYmFsX1NlcnZlLCBDdXJyZW50UlNlcnZlcktleSwgbm9vcCB9IGZyb20gXCIuL2luaXRQYXJhbXNcIjtcclxuaW1wb3J0IHsgQXN5bmNFdmVudCwgRXZlbnRDYWxsQmFjaywgU2VydmVyQmFzZSwgU2VydmVyUm91dGUsIE1lc3NhZ2VTb3VyY2UsIFBpblNlcnZlciB9IGZyb20gXCIuL3R5cGVcIjtcclxuaW1wb3J0IHsgc2hhbGxvd1JlZiwgQXBwIH0gZnJvbSBcInZ1ZVwiO1xyXG5cclxuY29uc3QgZ2V0Q3VycmVudFNlcnZlciA9IChjdXJyZW50OiBSb3V0ZUxvY2F0aW9uTm9ybWFsaXplZCkgPT4ge1xyXG4gIHZhciByZXN1bHQ6IFNlcnZlclJvdXRlID0ge30gYXMgU2VydmVyUm91dGU7XHJcbiAgY29uc3QgeyBmdWxsUGF0aCB9ID0gY3VycmVudDtcclxuICBjb25zdCBpZCA9IFBvbHlTeW1ib2woZnVsbFBhdGgpXHJcbiAgY29uc3Qgc2VydmVyID0gU2VydmVyTWFwLmdldChpZCk7XHJcbiAgaWYgKHNlcnZlcikge1xyXG4gICAgcmVzdWx0ID0gc2VydmVyIGFzIFNlcnZlclJvdXRlO1xyXG4gIH0gZWxzZSB7XHJcbiAgICByZXN1bHQuaWQgPSBQb2x5U3ltYm9sKGN1cnJlbnQuZnVsbFBhdGgpO1xyXG4gICAgcmVzdWx0LnJvdXRlID0gY3VycmVudDtcclxuICAgIHJlc3VsdC5jaGlsZHJlbiA9IFtdO1xyXG4gICAgcmVzdWx0LmNsZWFyU3VicyA9IFtdO1xyXG4gICAgcmVzdWx0LmNoYW5uZWxDZW50ZXIgPSBuZXcgQmVoYXZpb3JTdWJqZWN0PEFzeW5jRXZlbnQ+KGluaXRFdmVudCk7XHJcbiAgfVxyXG4gIHJldHVybiByZXN1bHQ7XHJcbn1cclxuY29uc3QgaXNFdmVudFR5cGUgPSAoZXZlbnQ6IEFzeW5jRXZlbnQsIHR5cGU6IHN0cmluZyB8IFJlZ0V4cCk6IGJvb2xlYW4gPT4ge1xyXG4gIGlmICh0eXBlIGluc3RhbmNlb2YgUmVnRXhwKSB7XHJcbiAgICBpZiAodHlwZW9mIGV2ZW50LnR5cGUgIT09ICdzdHJpbmcnKSByZXR1cm4gZmFsc2VcclxuICAgIHJldHVybiB0eXBlLnRlc3QoZXZlbnQudHlwZSBhcyBzdHJpbmcpO1xyXG4gIH0gZWxzZSB7XHJcbiAgICByZXR1cm4gZXZlbnQudHlwZSA9PT0gdHlwZTtcclxuICB9XHJcbn07XHJcbmNvbnN0IGN1cnJlbnRTZXJ2ZXIgPSBzaGFsbG93UmVmKFNIQUxMX0NVUlJFTlQpO1xyXG5cclxuZnVuY3Rpb24gcmVtb3ZlU3ViKHRyYW46IFNlcnZlckJhc2UsIHN1YjogU3Vic2NyaXB0aW9uKSB7XHJcbiAgc3ViLnVuc3Vic2NyaWJlKCk7XHJcbiAgY29uc3QgaW5kZXggPSB0cmFuLmNsZWFyU3Vicy5pbmRleE9mKHN1Yik7XHJcbiAgaW5kZXggPiAtMSAmJiAodHJhbi5jbGVhclN1YnMgPSB0cmFuLmNsZWFyU3Vicy5zcGxpY2UoaW5kZXgsIDEpKTtcclxufVxyXG5cclxuZnVuY3Rpb24gZGlzcGF0Y2godHJhbjogU2VydmVyQmFzZSwgZXZlbnQ6IEFzeW5jRXZlbnQsIGlzQXN5bmM6IGJvb2xlYW4gPSBmYWxzZSkge1xyXG4gIGNvbnN0IHsgY2hhbm5lbENlbnRlciwgaWQsIGVycm9yQ2hhbmVsIH0gPSB0cmFuO1xyXG4gIGNvbnN0IGlzUm9vdCA9IGlkID09PSBHbG9iYWxSU2VydmVyS2V5O1xyXG4gIGlmIChpc0FzeW5jID09PSBmYWxzZSkge1xyXG4gICAgY2hhbm5lbENlbnRlci5uZXh0KGV2ZW50KTtcclxuICAgIGlzUm9vdCAmJiB0cmFuLmNoaWxkcmVuLmZvckVhY2goY2hpbGQgPT4gY2hpbGQuY2hhbm5lbENlbnRlci5uZXh0KGV2ZW50KSlcclxuICAgIHJldHVyblxyXG4gIH07XHJcbiAgY29uc3QgeyByZXNvbHZlLCByZWplY3QgfSA9IGV2ZW50O1xyXG4gIGNvbnN0IHJvb3QgPSBmcm9tKFxyXG4gICAgbmV3IFByb21pc2U8YW55PihcclxuICAgICAgKHJlc29sdmUsIHJlamVjdCkgPT4ge1xyXG4gICAgICAgIGNoYW5uZWxDZW50ZXIubmV4dCh7XHJcbiAgICAgICAgICAuLi5ldmVudCxcclxuICAgICAgICAgIHJlc29sdmUsXHJcbiAgICAgICAgICByZWplY3QsXHJcbiAgICAgICAgfSk7XHJcbiAgICAgIH0pKTtcclxuICBjb25zdCBvcGVyYXRvcnM6IE9ic2VydmFibGU8YW55PltdID0gdHJhblxyXG4gICAgLmNoaWxkcmVuXHJcbiAgICAubWFwKFxyXG4gICAgICAkMSA9PiBmcm9tKFxyXG4gICAgICAgIG5ldyBQcm9taXNlKChyZXNvbHZlLCByZWplY3QpID0+IHtcclxuICAgICAgICAgICQxLmNoYW5uZWxDZW50ZXIubmV4dCh7XHJcbiAgICAgICAgICAgIC4uLmV2ZW50LFxyXG4gICAgICAgICAgICByZXNvbHZlLFxyXG4gICAgICAgICAgICByZWplY3QsXHJcbiAgICAgICAgICB9KVxyXG4gICAgICAgIH0pKSk7XHJcbiAgemlwKFxyXG4gICAgcm9vdCxcclxuICAgIC4uLm9wZXJhdG9yc1xyXG4gICkucGlwZShcclxuICAgIHRha2VMYXN0KDEpLFxyXG4gICkuc3Vic2NyaWJlKHtcclxuICAgIG5leHQ6IChwcm9taXNlczogQXJyYXk8YW55PikgPT4gcmVzb2x2ZShwcm9taXNlcyksXHJcbiAgICBjb21wbGV0ZTogKCkgPT4geyB9LFxyXG4gICAgZXJyb3I6IChlcnJvcjogRXJyb3IpID0+IHtcclxuICAgICAgcmVqZWN0KGVycm9yKTtcclxuICAgICAgZXJyb3JDaGFuZWwubmV4dChlcnJvcik7XHJcbiAgICB9XHJcbiAgfSlcclxufVxyXG5cclxuXHJcbmZ1bmN0aW9uIG9uKHRyYW46IFNlcnZlckJhc2UsIHR5cGU6IHN0cmluZyB8IFJlZ0V4cCwgY2FsbGJhY2s6IEV2ZW50Q2FsbEJhY2spIHtcclxuICBjb25zdCB7IGNoYW5uZWxDZW50ZXIsIGVycm9yQ2hhbmVsIH0gPSB0cmFuO1xyXG4gIGNvbnN0IHN1YjogU3Vic2NyaXB0aW9uID0gY2hhbm5lbENlbnRlclxyXG4gICAgLnBpcGUoXHJcbiAgICAgIGZpbHRlcigoZXZlbnQ6IEFzeW5jRXZlbnQpID0+IGlzRXZlbnRUeXBlKGV2ZW50LCB0eXBlKSB8fCBldmVudC50eXBlID09PSBpbml0RXZlbnRLZXkpLFxyXG4gICAgICBidWZmZXJDb3VudCgyLCAxKSxcclxuICAgICAgbWFwKGV2ZW50cyA9PiBldmVudHNbMV0pLFxyXG4gICAgKVxyXG4gICAgLnN1YnNjcmliZSh7XHJcbiAgICAgIGNvbXBsZXRlOiAoKSA9PiByZW1vdmVTdWIodHJhbiwgc3ViKSxcclxuICAgICAgbmV4dDogZXZlbnQgPT4gY2FsbGJhY2sgJiYgY2FsbGJhY2soZXZlbnQpLFxyXG4gICAgICBlcnJvcjogKGVycm9yOiBFcnJvcikgPT4gZXJyb3JDaGFuZWwubmV4dChlcnJvcilcclxuICAgIH0pXHJcbiAgdHJhbi5jbGVhclN1YnMucHVzaChzdWIpO1xyXG4gIHJldHVybiB7IGNsb3NlOiAoKSA9PiByZW1vdmVTdWIodHJhbiwgc3ViKSB9XHJcbn1cclxuXHJcbmZ1bmN0aW9uIG9uY2UodHJhbjogU2VydmVyQmFzZSwgdHlwZTogc3RyaW5nIHwgUmVnRXhwLCBjYWxsYmFjazogRXZlbnRDYWxsQmFjaykge1xyXG4gIGNvbnN0IHsgY2hhbm5lbENlbnRlciwgZXJyb3JDaGFuZWwgfSA9IHRyYW47XHJcbiAgY29uc3Qgc3ViOiBTdWJzY3JpcHRpb24gPSBjaGFubmVsQ2VudGVyXHJcbiAgICAucGlwZShcclxuICAgICAgZmlsdGVyKChldmVudDogQXN5bmNFdmVudCkgPT4gaXNFdmVudFR5cGUoZXZlbnQsIHR5cGUpIHx8IGV2ZW50LnR5cGUgPT09IGluaXRFdmVudEtleSksXHJcbiAgICAgIGJ1ZmZlckNvdW50KDIsIDEpLFxyXG4gICAgICBtYXAoZXZlbnRzID0+IGV2ZW50c1sxXSksXHJcbiAgICAgIHRha2UoMSksXHJcbiAgICApXHJcbiAgICAuc3Vic2NyaWJlKHtcclxuICAgICAgY29tcGxldGU6ICgpID0+IHJlbW92ZVN1Yih0cmFuLCBzdWIpLFxyXG4gICAgICBuZXh0OiBldmVudCA9PiBjYWxsYmFjayAmJiBjYWxsYmFjayhldmVudCksXHJcbiAgICAgIGVycm9yOiAoZXJyb3I6IEVycm9yKSA9PiBlcnJvckNoYW5lbC5uZXh0KGVycm9yKVxyXG4gICAgfSlcclxuICB0cmFuLmNsZWFyU3Vicy5wdXNoKHN1Yik7XHJcbiAgcmV0dXJuIHsgY2xvc2U6ICgpID0+IHJlbW92ZVN1Yih0cmFuLCBzdWIpIH1cclxufVxyXG5mdW5jdGlvbiBvbkJlaGF2aW9yKHRyYW46IFNlcnZlckJhc2UsIHR5cGU6IHN0cmluZyB8IFJlZ0V4cCwgY2FsbGJhY2s6IEV2ZW50Q2FsbEJhY2spIHtcclxuICBjb25zdCB7IGNoYW5uZWxDZW50ZXIsIGVycm9yQ2hhbmVsIH0gPSB0cmFuO1xyXG4gIGNvbnN0IHN1YjogU3Vic2NyaXB0aW9uID0gY2hhbm5lbENlbnRlclxyXG4gICAgLnBpcGUoXHJcbiAgICAgIGZpbHRlcihldmVudCA9PiBpc0V2ZW50VHlwZShldmVudCwgdHlwZSkgJiYgZXZlbnQudHlwZSAhPT0gaW5pdEV2ZW50S2V5KSxcclxuICAgIClcclxuICAgIC5zdWJzY3JpYmUoe1xyXG4gICAgICBjb21wbGV0ZTogKCkgPT4gcmVtb3ZlU3ViKHRyYW4sIHN1YiksXHJcbiAgICAgIG5leHQ6IGV2ZW50ID0+IGNhbGxiYWNrICYmIGNhbGxiYWNrKGV2ZW50KSxcclxuICAgICAgZXJyb3I6IChlcnJvcjogRXJyb3IpID0+IGVycm9yQ2hhbmVsLm5leHQoZXJyb3IpXHJcbiAgICB9KVxyXG4gIHRyYW4uY2xlYXJTdWJzLnB1c2goc3ViKTtcclxuICByZXR1cm4geyBjbG9zZTogKCkgPT4gcmVtb3ZlU3ViKHRyYW4sIHN1YikgfVxyXG59XHJcbmZ1bmN0aW9uIG9uRXJyb3IodHJhbjogU2VydmVyQmFzZSwgY2FsbGJhY2s6IEZ1bmN0aW9uKSB7XHJcbiAgY29uc3QgeyBlcnJvckNoYW5lbCB9ID0gdHJhbjtcclxuICBjb25zdCBzdWIgPSBlcnJvckNoYW5lbFxyXG4gICAgLnN1YnNjcmliZSh7XHJcbiAgICAgIGNvbXBsZXRlOiAoKSA9PiB7XHJcbiAgICAgICAgcmVtb3ZlU3ViKHRyYW4sIHN1Yik7XHJcbiAgICAgIH0sXHJcbiAgICAgIG5leHQ6IGVycm9yID0+IHtcclxuICAgICAgICBjYWxsYmFjayAmJiBjYWxsYmFjayhlcnJvcik7XHJcbiAgICAgIH0sXHJcbiAgICB9KVxyXG4gIHRyYW4uY2xlYXJTdWJzLnB1c2goc3ViKTtcclxufVxyXG5cclxuZXhwb3J0IGNvbnN0IGNyZWF0ZVJ4RnVuYyA9IChwaW46IFNlcnZlckJhc2UsIHNvdXJjZTogTWVzc2FnZVNvdXJjZSkgPT4ge1xyXG4gIGNvbnN0IHJvdXRlciA9IEdsb2JhbF9TZXJ2ZS5yb3V0ZXI7XHJcbiAgLy8g5Y+q5pyJcm91dGVyIOWPr+S7peaMh+WumuWcqOWTquS4qnBpbuinpuWPkVxyXG4gIGNvbnN0IGdldERpc3BhdGNoUGluID0gKHJvdXRlPzogUm91dGVMb2NhdGlvblJhdyk6IFNlcnZlckJhc2UgPT4ge1xyXG4gICAgaWYgKCEhcm91dGUgPT09IGZhbHNlKSByZXR1cm4gcGluXHJcbiAgICBjb25zdCBpc1Jvb3QgPSBwaW4uaWQgPT09IEdsb2JhbFJTZXJ2ZXJLZXk7XHJcbiAgICBpZiAoIWlzUm9vdCkgcmV0dXJuIHBpbjtcclxuICAgIGNvbnN0IHsgZnVsbFBhdGggfSA9IChyb3V0ZXIgYXMgUm91dGVyKS5yZXNvbHZlKHJvdXRlIGFzIFJvdXRlTG9jYXRpb25SYXcpXHJcbiAgICBjb25zdCBpZCA9IFBvbHlTeW1ib2woZnVsbFBhdGgpXHJcbiAgICBjb25zdCB0YXJnZXQgPSBTZXJ2ZXJNYXAuZ2V0KGlkKTtcclxuICAgIHJldHVybiB0YXJnZXQgfHwgcGluO1xyXG4gIH1cclxuICByZXR1cm4ge1xyXG4gICAgZGlzcGF0Y2g6ICh0eXBlOiBzdHJpbmcsIGRhdGE6IGFueSwgcm91dGU/OiBSb3V0ZUxvY2F0aW9uUmF3KSA9PiB7XHJcbiAgICAgIGRpc3BhdGNoKGdldERpc3BhdGNoUGluKHJvdXRlKSwge1xyXG4gICAgICAgIHR5cGUsXHJcbiAgICAgICAgZGF0YSxcclxuICAgICAgICBzb3VyY2UsXHJcbiAgICAgICAgcmVzb2x2ZTogKCkgPT4geyB9LFxyXG4gICAgICAgIHJlamVjdDogKCkgPT4geyB9LFxyXG4gICAgICB9KVxyXG4gICAgfSxcclxuICAgIGRpc3BhdGNoQXN5bmM6ICh0eXBlOiBzdHJpbmcsIGRhdGE6IGFueSwgcm91dGU/OiBSb3V0ZUxvY2F0aW9uUmF3KSA9PiB7XHJcbiAgICAgIHJldHVybiBuZXcgUHJvbWlzZSgocmVzb2x2ZSwgcmVqZWN0KSA9PiB7XHJcbiAgICAgICAgZGlzcGF0Y2goZ2V0RGlzcGF0Y2hQaW4ocm91dGUpLCB7XHJcbiAgICAgICAgICB0eXBlLFxyXG4gICAgICAgICAgZGF0YSxcclxuICAgICAgICAgIHNvdXJjZSxcclxuICAgICAgICAgIHJlc29sdmU6IChkYXRhOiBhbnkpID0+IHJlc29sdmUoZGF0YSksXHJcbiAgICAgICAgICByZWplY3Q6IChlcnJvcjogRXJyb3IpID0+IHJlamVjdChlcnJvciksXHJcbiAgICAgICAgfSwgdHJ1ZSlcclxuICAgICAgfSlcclxuICAgIH0sXHJcbiAgICBvbjogKHR5cGU6IHN0cmluZywgY2FsbGJhY2s6IEV2ZW50Q2FsbEJhY2spID0+IHtcclxuICAgICAgcmV0dXJuIG9uKHBpbiwgdHlwZSwgY2FsbGJhY2spO1xyXG4gICAgfSxcclxuICAgIG9uQmVoYXZpb3I6ICh0eXBlOiBzdHJpbmcsIGNhbGxiYWNrOiBFdmVudENhbGxCYWNrKSA9PiB7XHJcbiAgICAgIHJldHVybiBvbkJlaGF2aW9yKHBpbiwgdHlwZSwgY2FsbGJhY2spO1xyXG4gICAgfSxcclxuICAgIG9uY2U6ICh0eXBlOiBzdHJpbmcsIGNhbGxiYWNrOiBFdmVudENhbGxCYWNrKSA9PiB7XHJcbiAgICAgIHJldHVybiBvbmNlKHBpbiwgdHlwZSwgY2FsbGJhY2spO1xyXG4gICAgfSxcclxuICAgIG9uRXJyb3I6IChjYWxsYmFjazogRnVuY3Rpb24pID0+IHtcclxuICAgICAgb25FcnJvcihwaW4sIGNhbGxiYWNrKTtcclxuICAgIH1cclxuICB9XHJcbn1cclxuXHJcbmZ1bmN0aW9uIGNyZWF0ZVBpblNlcnZlcigpOiBQaW5TZXJ2ZXIge1xyXG4gIGNvbnN0IGluaXQgPSAocm91dGVyOiBSb3V0ZXIpID0+IHtcclxuICAgIHJvdXRlci5iZWZvcmVFYWNoKCh0bzogUm91dGVMb2NhdGlvbk5vcm1hbGl6ZWQsIGZyb206IFJvdXRlTG9jYXRpb25Ob3JtYWxpemVkKSA9PiB7XHJcbiAgICAgIGNvbnN0IHNlcnZlOiBTZXJ2ZXJCYXNlID0gZ2V0Q3VycmVudFNlcnZlcih0byk7XHJcbiAgICAgIGlmICghU2VydmVyTWFwLmhhcyhzZXJ2ZS5pZCkpIEdsb2JhbF9TZXJ2ZS5jaGlsZHJlbi5wdXNoKHNlcnZlKTtcclxuICAgICAgU2VydmVyTWFwLnNldChzZXJ2ZS5pZCwgc2VydmUpO1xyXG4gICAgICBjdXJyZW50U2VydmVyLnZhbHVlID0gc2VydmU7XHJcbiAgICB9KVxyXG4gICAgcm91dGVyLmFmdGVyRWFjaCgodG86IFJvdXRlTG9jYXRpb25Ob3JtYWxpemVkLCBmcm9tOiBSb3V0ZUxvY2F0aW9uTm9ybWFsaXplZCkgPT4ge1xyXG4gICAgICBjdXJyZW50U2VydmVyLnZhbHVlID0gZ2V0Q3VycmVudFNlcnZlcih0bylcclxuICAgIH0pXHJcblxyXG4gICAgR2xvYmFsX1NlcnZlLmNoYW5uZWxDZW50ZXIgPSBuZXcgQmVoYXZpb3JTdWJqZWN0PEFzeW5jRXZlbnQ+KGluaXRFdmVudCk7XHJcbiAgICBHbG9iYWxfU2VydmUucm91dGVyID0gcm91dGVyO1xyXG4gICAgU2VydmVyTWFwLnNldChHbG9iYWxfU2VydmUuaWQsIEdsb2JhbF9TZXJ2ZSk7XHJcbiAgICBjdXJyZW50U2VydmVyLnZhbHVlID0gR2xvYmFsX1NlcnZlO1xyXG4gIH1cclxuICBjb25zdCBTZXJ2ZXIgPSB7XHJcbiAgICBpbnN0YWxsKGFwcDogQXBwKSB7XHJcbiAgICAgIGluaXQoYXBwLmNvbmZpZy5nbG9iYWxQcm9wZXJ0aWVzLiRyb3V0ZXIpXHJcbiAgICAgIGFwcC5wcm92aWRlKEdsb2JhbFJTZXJ2ZXJLZXksIEdsb2JhbF9TZXJ2ZSk7XHJcbiAgICAgIGFwcC5wcm92aWRlKEN1cnJlbnRSU2VydmVyS2V5LCBjdXJyZW50U2VydmVyKTtcclxuICAgICAgYXBwLmNvbmZpZy5nbG9iYWxQcm9wZXJ0aWVzLiRycyA9ICh0eXBlOiBzdHJpbmcsIGRhdGE6IGFueSkgPT4ge1xyXG4gICAgICAgIGRpc3BhdGNoKGN1cnJlbnRTZXJ2ZXIudmFsdWUsIHtcclxuICAgICAgICAgIHR5cGUsXHJcbiAgICAgICAgICBkYXRhLFxyXG4gICAgICAgICAgc291cmNlOiB1c2VSb3V0ZSgpLFxyXG4gICAgICAgICAgcmVzb2x2ZTogKCkgPT4geyB9LFxyXG4gICAgICAgICAgcmVqZWN0OiAoKSA9PiB7IH0sXHJcbiAgICAgICAgfSlcclxuICAgICAgfVxyXG4gICAgfSxcclxuICAgIGRpc3BhdGNoOiAodHlwZTogc3RyaW5nLCBkYXRhOiBhbnksIC4uLmFyZ3M6IGFueVtdKSA9PiB7XHJcbiAgICAgIGxldCBpc0FzeW5jOiBib29sZWFuID0gZmFsc2U7XHJcbiAgICAgIGxldCB0YXJnZXQ6IFJvdXRlTG9jYXRpb25SYXcgfCB1bmRlZmluZWQgPSB1bmRlZmluZWQ7XHJcbiAgICAgIGFyZ3MgPSBhcmdzLmZpbHRlcigkMSA9PiAkMSAhPT0gdW5kZWZpbmVkKVxyXG4gICAgICBpZiAoYXJncy5sZW5ndGggPT09IDIpIHtcclxuICAgICAgICBpc0FzeW5jID0gYXJnc1swXSBhcyBib29sZWFuO1xyXG4gICAgICAgIHRhcmdldCA9IGFyZ3NbMV0gYXMgUm91dGVMb2NhdGlvblJhdztcclxuICAgICAgfSBlbHNlIGlmIChhcmdzLmxlbmd0aCA9PT0gMSkge1xyXG4gICAgICAgIGlmICh0eXBlb2YgYXJnc1swXSA9PT0gJ2Jvb2xlYW4nKSB7XHJcbiAgICAgICAgICBpc0FzeW5jID0gYXJnc1swXSBhcyBib29sZWFuO1xyXG4gICAgICAgICAgdGFyZ2V0ID0gdW5kZWZpbmVkXHJcbiAgICAgICAgfSBlbHNlIHtcclxuICAgICAgICAgIHRhcmdldCA9IGFyZ3NbMF0gYXMgUm91dGVMb2NhdGlvblJhdztcclxuICAgICAgICAgIGlzQXN5bmMgPSBmYWxzZTtcclxuICAgICAgICB9XHJcbiAgICAgIH0gZWxzZSB7XHJcbiAgICAgICAgdGFyZ2V0ID0gdW5kZWZpbmVkO1xyXG4gICAgICAgIGlzQXN5bmMgPSBmYWxzZTtcclxuICAgICAgfVxyXG4gICAgICBsZXQgcGluOiBTZXJ2ZXJCYXNlIHwgdW5kZWZpbmVkID0gdW5kZWZpbmVkXHJcbiAgICAgIGlmICghIXRhcmdldCA9PT0gZmFsc2UpIHBpbiA9IEdsb2JhbF9TZXJ2ZTtcclxuICAgICAgZWxzZSB7XHJcbiAgICAgICAgY29uc3Qgcm91dGVyID0gR2xvYmFsX1NlcnZlLnJvdXRlcjtcclxuICAgICAgICBjb25zdCB7IGZ1bGxQYXRoIH0gPSAocm91dGVyIGFzIFJvdXRlcikucmVzb2x2ZSh0YXJnZXQgYXMgUm91dGVMb2NhdGlvblJhdylcclxuICAgICAgICBjb25zdCBpZCA9IFBvbHlTeW1ib2woZnVsbFBhdGgpXHJcbiAgICAgICAgcGluID0gU2VydmVyTWFwLmdldChpZCk7XHJcbiAgICAgIH1cclxuXHJcbiAgICAgIHJldHVybiBuZXcgUHJvbWlzZSgocmVzb2x2ZSwgcmVqZWN0KSA9PiB7XHJcbiAgICAgICAgZGlzcGF0Y2gocGluIGFzIFNlcnZlckJhc2UsIHtcclxuICAgICAgICAgIHR5cGU6IHR5cGUsXHJcbiAgICAgICAgICBkYXRhOiBkYXRhLFxyXG4gICAgICAgICAgc291cmNlOiB1bmRlZmluZWQsXHJcbiAgICAgICAgICByZXNvbHZlOiBpc0FzeW5jID8gcmVzb2x2ZSA6IG5vb3AsXHJcbiAgICAgICAgICByZWplY3Q6IGlzQXN5bmMgPyByZWplY3QgOiBub29wLFxyXG4gICAgICAgIH0sICEhaXNBc3luYylcclxuICAgICAgICBpZiAoIWlzQXN5bmMpIHJlc29sdmUobnVsbClcclxuICAgICAgfSlcclxuICAgIH1cclxuICB9XHJcbiAgcmV0dXJuIFNlcnZlclxyXG59XHJcblxyXG5jb25zdCBTZXJ2ZXI6IFBpblNlcnZlciA9IGNyZWF0ZVBpblNlcnZlcigpO1xyXG5cclxuZXhwb3J0IGRlZmF1bHQgU2VydmVyOyJdLCJuYW1lcyI6W10sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./src/RouterPin.ts\n");
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+exports.__esModule = true;
+exports.createRxFunc = void 0;
+var rxjs_1 = __webpack_require__(/*! rxjs */ "rxjs");
+var operators_1 = __webpack_require__(/*! rxjs/operators */ "rxjs/operators");
+var vue_router_1 = __webpack_require__(/*! vue-router */ "vue-router");
+var initParams_1 = __webpack_require__(/*! ./initParams */ "./src/initParams.ts");
+var vue_1 = __webpack_require__(/*! vue */ "vue");
+var getCurrentServer = function (current) {
+    var result = {};
+    var fullPath = current.fullPath;
+    var id = (0, initParams_1.PolySymbol)(fullPath);
+    var server = initParams_1.ServerMap.get(id);
+    if (server) {
+        result = server;
+    }
+    else {
+        result.id = (0, initParams_1.PolySymbol)(current.fullPath);
+        result.route = current;
+        result.children = [];
+        result.clearSubs = [];
+        result.channelCenter = new rxjs_1.BehaviorSubject(initParams_1.initEvent);
+    }
+    return result;
+};
+var isEventType = function (event, type) {
+    if (type instanceof RegExp) {
+        if (typeof event.type !== 'string')
+            return false;
+        return type.test(event.type);
+    }
+    else {
+        return event.type === type;
+    }
+};
+var currentServer = (0, vue_1.shallowRef)(initParams_1.SHALL_CURRENT);
+function removeSub(tran, sub) {
+    sub && sub.unsubscribe();
+    var index = tran.clearSubs.indexOf(sub);
+    index > -1 && (tran.clearSubs.splice(index, 1));
+}
+function dispatch(tran, event, isAsync) {
+    if (isAsync === void 0) { isAsync = false; }
+    var channelCenter = tran.channelCenter, id = tran.id, errorChanel = tran.errorChanel;
+    var isRoot = id === initParams_1.GlobalRServerKey;
+    if (isAsync === false) {
+        channelCenter.next(event);
+        isRoot && tran.children.forEach(function (child) { return child.channelCenter.next(event); });
+        return;
+    }
+    ;
+    var resolve = event.resolve, reject = event.reject;
+    var root = (0, rxjs_1.from)(new Promise(function (resolve, reject) {
+        channelCenter.next(__assign(__assign({}, event), { resolve: resolve, reject: reject }));
+    }));
+    var operators = tran
+        .children
+        .map(function ($1) { return (0, rxjs_1.from)(new Promise(function (resolve, reject) {
+        $1.channelCenter.next(__assign(__assign({}, event), { resolve: resolve, reject: reject }));
+    })); });
+    rxjs_1.zip.apply(void 0, __spreadArray([root], operators, false)).pipe((0, operators_1.takeLast)(1)).subscribe({
+        next: function (promises) { return resolve(promises); },
+        complete: function () { },
+        error: function (error) {
+            reject(error);
+            errorChanel.next(error);
+        }
+    });
+}
+function on(tran, type, callback) {
+    var channelCenter = tran.channelCenter, errorChanel = tran.errorChanel;
+    var sub = channelCenter
+        .pipe((0, operators_1.filter)(function (event) { return isEventType(event, type) || event.type === initParams_1.initEventKey; }), (0, operators_1.bufferCount)(2, 1), (0, operators_1.map)(function (events) { return events[1]; }))
+        .subscribe({
+        complete: function () { return removeSub(tran, sub); },
+        next: function (event) { return callback && callback(event); },
+        error: function (error) { return errorChanel.next(error); }
+    });
+    tran.clearSubs.push(sub);
+    return { close: function () { return removeSub(tran, sub); } };
+}
+function once(tran, type, callback) {
+    var channelCenter = tran.channelCenter, errorChanel = tran.errorChanel;
+    var sub = channelCenter
+        .pipe((0, operators_1.filter)(function (event) { return isEventType(event, type) || event.type === initParams_1.initEventKey; }), (0, operators_1.bufferCount)(2, 1), (0, operators_1.map)(function (events) { return events[1]; }), (0, operators_1.take)(1))
+        .subscribe({
+        complete: function () { return removeSub(tran, sub); },
+        next: function (event) { return callback && callback(event); },
+        error: function (error) { return errorChanel.next(error); }
+    });
+    tran.clearSubs.push(sub);
+    return { close: function () { return removeSub(tran, sub); } };
+}
+function onBehavior(tran, type, callback) {
+    var channelCenter = tran.channelCenter, errorChanel = tran.errorChanel;
+    var sub = channelCenter
+        .pipe((0, operators_1.filter)(function (event) { return isEventType(event, type) && event.type !== initParams_1.initEventKey; }))
+        .subscribe({
+        complete: function () { return removeSub(tran, sub); },
+        next: function (event) { return callback && callback(event); },
+        error: function (error) { return errorChanel.next(error); }
+    });
+    tran.clearSubs.push(sub);
+    return { close: function () { return removeSub(tran, sub); } };
+}
+function onError(tran, callback) {
+    var errorChanel = tran.errorChanel;
+    var sub = errorChanel
+        .subscribe({
+        complete: function () {
+            removeSub(tran, sub);
+        },
+        next: function (error) {
+            callback && callback(error);
+        }
+    });
+    tran.clearSubs.push(sub);
+    return { close: function () { return removeSub(tran, sub); } };
+}
+var createRxFunc = function (pin, source) {
+    var router = initParams_1.Global_Serve.router;
+    // 只有router 可以指定在哪个pin触发
+    var getDispatchPin = function (route) {
+        if (!!route === false)
+            return pin;
+        var isRoot = pin.id === initParams_1.GlobalRServerKey;
+        if (!isRoot)
+            return pin;
+        var fullPath = router.resolve(route).fullPath;
+        var id = (0, initParams_1.PolySymbol)(fullPath);
+        var target = initParams_1.ServerMap.get(id);
+        return target || pin;
+    };
+    return {
+        dispatch: function (type, data, route) {
+            dispatch(getDispatchPin(route), {
+                type: type,
+                data: data,
+                source: source,
+                resolve: function () { },
+                reject: function () { }
+            });
+        },
+        dispatchAsync: function (type, data, route) {
+            return new Promise(function (resolve, reject) {
+                dispatch(getDispatchPin(route), {
+                    type: type,
+                    data: data,
+                    source: source,
+                    resolve: function (data) { return resolve(data); },
+                    reject: function (error) { return reject(error); }
+                }, true);
+            });
+        },
+        on: function (type, callback) {
+            return on(pin, type, callback);
+        },
+        onBehavior: function (type, callback) {
+            return onBehavior(pin, type, callback);
+        },
+        once: function (type, callback) {
+            return once(pin, type, callback);
+        },
+        onError: function (callback) {
+            return onError(pin, callback);
+        }
+    };
+};
+exports.createRxFunc = createRxFunc;
+function createPinServer() {
+    var init = function (router) {
+        router.beforeEach(function (to, from) {
+            var serve = getCurrentServer(to);
+            if (!initParams_1.ServerMap.has(serve.id))
+                initParams_1.Global_Serve.children.push(serve);
+            initParams_1.ServerMap.set(serve.id, serve);
+            currentServer.value = serve;
+        });
+        router.afterEach(function (to, from) {
+            currentServer.value = getCurrentServer(to);
+        });
+        initParams_1.Global_Serve.channelCenter = new rxjs_1.BehaviorSubject(initParams_1.initEvent);
+        initParams_1.Global_Serve.router = router;
+        initParams_1.ServerMap.set(initParams_1.Global_Serve.id, initParams_1.Global_Serve);
+        currentServer.value = initParams_1.Global_Serve;
+    };
+    var Server = {
+        install: function (app) {
+            init(app.config.globalProperties.$router);
+            app.provide(initParams_1.GlobalRServerKey, initParams_1.Global_Serve);
+            app.provide(initParams_1.CurrentRServerKey, currentServer);
+            app.config.globalProperties.$rs = function (type, data) {
+                dispatch(currentServer.value, {
+                    type: type,
+                    data: data,
+                    source: (0, vue_router_1.useRoute)(),
+                    resolve: function () { },
+                    reject: function () { }
+                });
+            };
+        },
+        dispatch: function (type, data) {
+            var args = [];
+            for (var _i = 2; _i < arguments.length; _i++) {
+                args[_i - 2] = arguments[_i];
+            }
+            var isAsync = false;
+            var target = undefined;
+            args = args.filter(function ($1) { return $1 !== undefined; });
+            if (args.length === 2) {
+                isAsync = args[0];
+                target = args[1];
+            }
+            else if (args.length === 1) {
+                if (typeof args[0] === 'boolean') {
+                    isAsync = args[0];
+                    target = undefined;
+                }
+                else {
+                    target = args[0];
+                    isAsync = false;
+                }
+            }
+            else {
+                target = undefined;
+                isAsync = false;
+            }
+            var pin = undefined;
+            if (!!target === false)
+                pin = initParams_1.Global_Serve;
+            else {
+                var router = initParams_1.Global_Serve.router;
+                var fullPath = router.resolve(target).fullPath;
+                var id = (0, initParams_1.PolySymbol)(fullPath);
+                pin = initParams_1.ServerMap.get(id);
+            }
+            return new Promise(function (resolve, reject) {
+                dispatch(pin, {
+                    type: type,
+                    data: data,
+                    source: undefined,
+                    resolve: isAsync ? resolve : initParams_1.noop,
+                    reject: isAsync ? reject : initParams_1.noop
+                }, !!isAsync);
+                if (!isAsync)
+                    resolve(null);
+            });
+        }
+    };
+    return Server;
+}
+var Server = createPinServer();
+exports["default"] = Server;
+
 
 /***/ }),
 
@@ -34,9 +299,68 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"VueRouterPin\": () => (/* reexport safe */ _RouterPin__WEBPACK_IMPORTED_MODULE_2__[\"default\"]),\n/* harmony export */   \"dispatchEvent\": () => (/* binding */ dispatchEvent),\n/* harmony export */   \"useRoutePin\": () => (/* binding */ useRoutePin),\n/* harmony export */   \"useRouterPin\": () => (/* binding */ useRouterPin)\n/* harmony export */ });\n/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ \"vue-router\");\n/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_router__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _initParams__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./initParams */ \"./src/initParams.ts\");\n/* harmony import */ var _RouterPin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RouterPin */ \"./src/RouterPin.ts\");\n/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ \"vue\");\n/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_3__);\n\r\n\r\n\r\n\r\n/**\r\n *\r\n * @returns 当前路由派发\r\n */\r\nfunction useRoutePin() {\r\n    const currentServe = (0,vue__WEBPACK_IMPORTED_MODULE_3__.inject)(_initParams__WEBPACK_IMPORTED_MODULE_1__.CurrentRServerKey);\r\n    if (!currentServe) {\r\n        return _initParams__WEBPACK_IMPORTED_MODULE_1__.EmptyPin;\r\n    }\r\n    return (0,_RouterPin__WEBPACK_IMPORTED_MODULE_2__.createRxFunc)(currentServe.value, (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.useRoute)());\r\n}\r\n/**\r\n *\r\n * @returns 全局派发\r\n */\r\nfunction useRouterPin() {\r\n    const currentServe = (0,vue__WEBPACK_IMPORTED_MODULE_3__.inject)(_initParams__WEBPACK_IMPORTED_MODULE_1__.GlobalRServerKey);\r\n    if (!currentServe) {\r\n        return _initParams__WEBPACK_IMPORTED_MODULE_1__.EmptyPin;\r\n    }\r\n    return (0,_RouterPin__WEBPACK_IMPORTED_MODULE_2__.createRxFunc)(currentServe, (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.useRouter)());\r\n}\r\nfunction dispatchEvent(type, data, isAsync, target) {\r\n    return _RouterPin__WEBPACK_IMPORTED_MODULE_2__[\"default\"].dispatch(type, data, isAsync, target);\r\n}\r\n\r\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvaW5kZXgudHMuanMiLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7OztBQUFpRDtBQUM0QjtBQUMxQjtBQUVWO0FBRXpDOzs7R0FHRztBQUNILFNBQVMsV0FBVztJQUNsQixNQUFNLFlBQVksR0FBNEIsMkNBQU0sQ0FBQywwREFBaUIsQ0FBNEIsQ0FBQztJQUNuRyxJQUFJLENBQUMsWUFBWSxFQUFFO1FBQ2pCLE9BQU8saURBQVE7S0FDaEI7SUFDRCxPQUFPLHdEQUFZLENBQUMsWUFBWSxDQUFDLEtBQUssRUFBRSxvREFBUSxFQUFFLENBQUM7QUFDckQsQ0FBQztBQUNEOzs7R0FHRztBQUNILFNBQVMsWUFBWTtJQUNuQixNQUFNLFlBQVksR0FBaUIsMkNBQU0sQ0FBQyx5REFBZ0IsQ0FBaUIsQ0FBQztJQUM1RSxJQUFJLENBQUMsWUFBWSxFQUFFO1FBQ2pCLE9BQU8saURBQVE7S0FDaEI7SUFDRCxPQUFPLHdEQUFZLENBQUMsWUFBWSxFQUFFLHFEQUFTLEVBQUUsQ0FBQyxDQUFDO0FBQ2pELENBQUM7QUFFRCxTQUFTLGFBQWEsQ0FBQyxJQUFZLEVBQUUsSUFBUyxFQUFFLE9BQWlCLEVBQUUsTUFBc0I7SUFDdkYsT0FBTywyREFBZSxDQUFDLElBQUksRUFBRSxJQUFJLEVBQUUsT0FBTyxFQUFFLE1BQU0sQ0FBQyxDQUFDO0FBQ3RELENBQUM7QUFPQSIsInNvdXJjZXMiOlsid2VicGFjazovL1Bpbi8uL3NyYy9pbmRleC50cz9mZmI0Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHVzZVJvdXRlLCB1c2VSb3V0ZXIgfSBmcm9tIFwidnVlLXJvdXRlclwiO1xyXG5pbXBvcnQgeyBDdXJyZW50UlNlcnZlcktleSwgR2xvYmFsUlNlcnZlcktleSwgRW1wdHlQaW4gfSBmcm9tIFwiLi9pbml0UGFyYW1zXCI7XHJcbmltcG9ydCBTZXJ2ZXIsIHsgY3JlYXRlUnhGdW5jIH0gZnJvbSBcIi4vUm91dGVyUGluXCI7XHJcbmltcG9ydCB7IE1lc3NhZ2VTb3VyY2UsIFJvdXRlUGluLCBSb3V0ZXJQaW4sIFNlcnZlclJvdXRlLCBTZXJ2ZXJSb3V0ZXIgfSBmcm9tIFwiLi90eXBlXCI7XHJcbmltcG9ydCB7IGluamVjdCwgU2hhbGxvd1JlZiB9IGZyb20gXCJ2dWVcIjtcclxuXHJcbi8qKlxyXG4gKiBcclxuICogQHJldHVybnMg5b2T5YmN6Lev55Sx5rS+5Y+RXHJcbiAqL1xyXG5mdW5jdGlvbiB1c2VSb3V0ZVBpbigpOiBSb3V0ZVBpbiB7XHJcbiAgY29uc3QgY3VycmVudFNlcnZlOiBTaGFsbG93UmVmPFNlcnZlclJvdXRlPiA9IGluamVjdChDdXJyZW50UlNlcnZlcktleSkgYXMgU2hhbGxvd1JlZjxTZXJ2ZXJSb3V0ZT47XHJcbiAgaWYgKCFjdXJyZW50U2VydmUpIHtcclxuICAgIHJldHVybiBFbXB0eVBpblxyXG4gIH1cclxuICByZXR1cm4gY3JlYXRlUnhGdW5jKGN1cnJlbnRTZXJ2ZS52YWx1ZSwgdXNlUm91dGUoKSlcclxufVxyXG4vKipcclxuICogXHJcbiAqIEByZXR1cm5zIOWFqOWxgOa0vuWPkVxyXG4gKi9cclxuZnVuY3Rpb24gdXNlUm91dGVyUGluKCk6IFJvdXRlclBpbiB7XHJcbiAgY29uc3QgY3VycmVudFNlcnZlOiBTZXJ2ZXJSb3V0ZXIgPSBpbmplY3QoR2xvYmFsUlNlcnZlcktleSkgYXMgU2VydmVyUm91dGVyO1xyXG4gIGlmICghY3VycmVudFNlcnZlKSB7XHJcbiAgICByZXR1cm4gRW1wdHlQaW5cclxuICB9XHJcbiAgcmV0dXJuIGNyZWF0ZVJ4RnVuYyhjdXJyZW50U2VydmUsIHVzZVJvdXRlcigpKTtcclxufVxyXG5cclxuZnVuY3Rpb24gZGlzcGF0Y2hFdmVudCh0eXBlOiBzdHJpbmcsIGRhdGE6IGFueSwgaXNBc3luYz86IGJvb2xlYW4sIHRhcmdldD86IE1lc3NhZ2VTb3VyY2UpOiBQcm9taXNlPGFueT4ge1xyXG4gIHJldHVybiBTZXJ2ZXIuZGlzcGF0Y2godHlwZSwgZGF0YSwgaXNBc3luYywgdGFyZ2V0KTtcclxufVxyXG5cclxuZXhwb3J0IHtcclxuICBTZXJ2ZXIgYXMgVnVlUm91dGVyUGluLFxyXG4gIHVzZVJvdXRlUGluLFxyXG4gIHVzZVJvdXRlclBpbixcclxuICBkaXNwYXRjaEV2ZW50LFxyXG59Il0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./src/index.ts\n");
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+exports.__esModule = true;
+exports.dispatchEvent = exports.useRouterPin = exports.useRoutePin = exports.VueRouterPin = void 0;
+var vue_router_1 = __webpack_require__(/*! vue-router */ "vue-router");
+var initParams_1 = __webpack_require__(/*! ./initParams */ "./src/initParams.ts");
+var RouterPin_1 = __importStar(__webpack_require__(/*! ./RouterPin */ "./src/RouterPin.ts"));
+exports.VueRouterPin = RouterPin_1["default"];
+var vue_1 = __webpack_require__(/*! vue */ "vue");
+/**
+ *
+ * @returns 当前路由派发
+ */
+function useRoutePin() {
+    var currentServe = (0, vue_1.inject)(initParams_1.CurrentRServerKey);
+    if (!currentServe) {
+        return initParams_1.EmptyPin;
+    }
+    return (0, RouterPin_1.createRxFunc)(currentServe.value, (0, vue_router_1.useRoute)());
+}
+exports.useRoutePin = useRoutePin;
+/**
+ *
+ * @returns 全局派发
+ */
+function useRouterPin() {
+    var currentServe = (0, vue_1.inject)(initParams_1.GlobalRServerKey);
+    if (!currentServe) {
+        return initParams_1.EmptyPin;
+    }
+    return (0, RouterPin_1.createRxFunc)(currentServe, (0, vue_router_1.useRouter)());
+}
+exports.useRouterPin = useRouterPin;
+function dispatchEvent(type, data, isAsync, target) {
+    return RouterPin_1["default"].dispatch(type, data, isAsync, target);
+}
+exports.dispatchEvent = dispatchEvent;
+
 
 /***/ }),
 
@@ -44,9 +368,64 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /*!***************************!*\
   !*** ./src/initParams.ts ***!
   \***************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"CurrentRServerKey\": () => (/* binding */ CurrentRServerKey),\n/* harmony export */   \"EmptyPin\": () => (/* binding */ EmptyPin),\n/* harmony export */   \"GlobalRServerKey\": () => (/* binding */ GlobalRServerKey),\n/* harmony export */   \"Global_Serve\": () => (/* binding */ Global_Serve),\n/* harmony export */   \"PolySymbol\": () => (/* binding */ PolySymbol),\n/* harmony export */   \"SHALL_CURRENT\": () => (/* binding */ SHALL_CURRENT),\n/* harmony export */   \"ServerMap\": () => (/* binding */ ServerMap),\n/* harmony export */   \"initEvent\": () => (/* binding */ initEvent),\n/* harmony export */   \"initEventKey\": () => (/* binding */ initEventKey),\n/* harmony export */   \"noop\": () => (/* binding */ noop)\n/* harmony export */ });\n/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ \"rxjs\");\n/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(rxjs__WEBPACK_IMPORTED_MODULE_0__);\n\r\nfunction noop() { }\r\n;\r\nconst hasSymbol = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';\r\nconst PolySymbol = (name) => \r\n// vr = vue router\r\nhasSymbol\r\n    ? Symbol.for('[r-server]: ' + name)\r\n    : ('[r-server]: ') + name;\r\nconst initEventKey = PolySymbol('event-init');\r\nconst GlobalRServerKey = PolySymbol('GlobalRServerKey');\r\nconst CurrentRServerKey = PolySymbol('CurrentRServerKey');\r\nconst ServerMap = new Map();\r\nconst initEvent = { type: initEventKey, data: null, reject: noop, resolve: noop, source: undefined };\r\nconst SHALL_CURRENT = {\r\n    id: '',\r\n    channelCenter: new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(initEvent),\r\n    errorChanel: new rxjs__WEBPACK_IMPORTED_MODULE_0__.Subject(),\r\n    children: [],\r\n    clearSubs: [],\r\n};\r\nconst Global_Serve = {\r\n    id: GlobalRServerKey,\r\n    router: undefined,\r\n    children: [],\r\n    channelCenter: new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(initEvent),\r\n    errorChanel: new rxjs__WEBPACK_IMPORTED_MODULE_0__.Subject(),\r\n    clearSubs: [],\r\n};\r\nconst emptyRunNoop = () => {\r\n    console.error('please install vue-router-pin');\r\n    return;\r\n};\r\nconst EmptyPin = {\r\n    on: emptyRunNoop,\r\n    onBehavior: emptyRunNoop,\r\n    once: emptyRunNoop,\r\n    onError: emptyRunNoop,\r\n    dispatch: emptyRunNoop,\r\n    dispatchAsync: emptyRunNoop,\r\n};\r\n\r\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvaW5pdFBhcmFtcy50cy5qcyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7QUFBZ0Q7QUFHaEQsU0FBUyxJQUFJLEtBQUssQ0FBQztBQUFBLENBQUM7QUFFcEIsTUFBTSxTQUFTLEdBQUcsT0FBTyxNQUFNLEtBQUssVUFBVSxJQUFJLE9BQU8sTUFBTSxDQUFDLFdBQVcsS0FBSyxRQUFRLENBQUM7QUFFekYsTUFBTSxVQUFVLEdBQUcsQ0FBQyxJQUFZLEVBQUUsRUFBRTtBQUNsQyxrQkFBa0I7QUFDbEIsU0FBUztJQUNQLENBQUMsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLGNBQWMsR0FBRyxJQUFJLENBQUM7SUFDbkMsQ0FBQyxDQUFDLENBQUMsY0FBYyxDQUFDLEdBQUcsSUFBSSxDQUFDO0FBRTlCLE1BQU0sWUFBWSxHQUFHLFVBQVUsQ0FBQyxZQUFZLENBQUMsQ0FBQztBQUU5QyxNQUFNLGdCQUFnQixHQUFHLFVBQVUsQ0FBQyxrQkFBa0IsQ0FBQyxDQUFDO0FBRXhELE1BQU0saUJBQWlCLEdBQUcsVUFBVSxDQUFDLG1CQUFtQixDQUFDLENBQUM7QUFFMUQsTUFBTSxTQUFTLEdBQUcsSUFBSSxHQUFHLEVBQStCLENBQUM7QUFFekQsTUFBTSxTQUFTLEdBQWUsRUFBRSxJQUFJLEVBQUUsWUFBWSxFQUFFLElBQUksRUFBRSxJQUFJLEVBQUUsTUFBTSxFQUFFLElBQUksRUFBRSxPQUFPLEVBQUUsSUFBSSxFQUFFLE1BQU0sRUFBRSxTQUFTLEVBQUU7QUFFaEgsTUFBTSxhQUFhLEdBQWU7SUFDaEMsRUFBRSxFQUFFLEVBQUU7SUFDTixhQUFhLEVBQUUsSUFBSSxpREFBZSxDQUFhLFNBQVMsQ0FBQztJQUN6RCxXQUFXLEVBQUUsSUFBSSx5Q0FBTyxFQUFFO0lBQzFCLFFBQVEsRUFBRSxFQUFFO0lBQ1osU0FBUyxFQUFFLEVBQUU7Q0FDZCxDQUFDO0FBRUYsTUFBTSxZQUFZLEdBQWlCO0lBQ2pDLEVBQUUsRUFBRSxnQkFBZ0I7SUFDcEIsTUFBTSxFQUFFLFNBQVM7SUFDakIsUUFBUSxFQUFFLEVBQUU7SUFDWixhQUFhLEVBQUUsSUFBSSxpREFBZSxDQUFhLFNBQVMsQ0FBQztJQUN6RCxXQUFXLEVBQUUsSUFBSSx5Q0FBTyxFQUFFO0lBQzFCLFNBQVMsRUFBRSxFQUFFO0NBQ2Q7QUFFRCxNQUFNLFlBQVksR0FBRyxHQUFRLEVBQUU7SUFDN0IsT0FBTyxDQUFDLEtBQUssQ0FBQywrQkFBK0IsQ0FBQztJQUM5QyxPQUFPO0FBQ1QsQ0FBQztBQUNELE1BQU0sUUFBUSxHQUF5QjtJQUNyQyxFQUFFLEVBQUUsWUFBWTtJQUNoQixVQUFVLEVBQUUsWUFBWTtJQUN4QixJQUFJLEVBQUUsWUFBWTtJQUNsQixPQUFPLEVBQUUsWUFBWTtJQUNyQixRQUFRLEVBQUUsWUFBWTtJQUN0QixhQUFhLEVBQUUsWUFBWTtDQUM1QjtBQWFBIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vUGluLy4vc3JjL2luaXRQYXJhbXMudHM/NTgxMyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBCZWhhdmlvclN1YmplY3QsIFN1YmplY3QgfSBmcm9tIFwicnhqc1wiO1xyXG5pbXBvcnQgeyBBc3luY0V2ZW50LCBSb3V0ZVBpbiwgUm91dGVyUGluLCBTZXJ2ZXJCYXNlLCBTZXJ2ZXJSb3V0ZXIgfSBmcm9tIFwiLi90eXBlXCI7XHJcblxyXG5mdW5jdGlvbiBub29wKCkgeyB9O1xyXG5cclxuY29uc3QgaGFzU3ltYm9sID0gdHlwZW9mIFN5bWJvbCA9PT0gJ2Z1bmN0aW9uJyAmJiB0eXBlb2YgU3ltYm9sLnRvU3RyaW5nVGFnID09PSAnc3ltYm9sJztcclxuXHJcbmNvbnN0IFBvbHlTeW1ib2wgPSAobmFtZTogc3RyaW5nKSA9PlxyXG4gIC8vIHZyID0gdnVlIHJvdXRlclxyXG4gIGhhc1N5bWJvbFxyXG4gICAgPyBTeW1ib2wuZm9yKCdbci1zZXJ2ZXJdOiAnICsgbmFtZSlcclxuICAgIDogKCdbci1zZXJ2ZXJdOiAnKSArIG5hbWU7XHJcblxyXG5jb25zdCBpbml0RXZlbnRLZXkgPSBQb2x5U3ltYm9sKCdldmVudC1pbml0Jyk7XHJcblxyXG5jb25zdCBHbG9iYWxSU2VydmVyS2V5ID0gUG9seVN5bWJvbCgnR2xvYmFsUlNlcnZlcktleScpO1xyXG5cclxuY29uc3QgQ3VycmVudFJTZXJ2ZXJLZXkgPSBQb2x5U3ltYm9sKCdDdXJyZW50UlNlcnZlcktleScpO1xyXG5cclxuY29uc3QgU2VydmVyTWFwID0gbmV3IE1hcDxzdHJpbmcgfCBzeW1ib2wsIFNlcnZlckJhc2U+KCk7XHJcblxyXG5jb25zdCBpbml0RXZlbnQ6IEFzeW5jRXZlbnQgPSB7IHR5cGU6IGluaXRFdmVudEtleSwgZGF0YTogbnVsbCwgcmVqZWN0OiBub29wLCByZXNvbHZlOiBub29wLCBzb3VyY2U6IHVuZGVmaW5lZCB9XHJcblxyXG5jb25zdCBTSEFMTF9DVVJSRU5UOiBTZXJ2ZXJCYXNlID0ge1xyXG4gIGlkOiAnJyxcclxuICBjaGFubmVsQ2VudGVyOiBuZXcgQmVoYXZpb3JTdWJqZWN0PEFzeW5jRXZlbnQ+KGluaXRFdmVudCksXHJcbiAgZXJyb3JDaGFuZWw6IG5ldyBTdWJqZWN0KCksXHJcbiAgY2hpbGRyZW46IFtdLFxyXG4gIGNsZWFyU3ViczogW10sXHJcbn07XHJcblxyXG5jb25zdCBHbG9iYWxfU2VydmU6IFNlcnZlclJvdXRlciA9IHtcclxuICBpZDogR2xvYmFsUlNlcnZlcktleSxcclxuICByb3V0ZXI6IHVuZGVmaW5lZCxcclxuICBjaGlsZHJlbjogW10sXHJcbiAgY2hhbm5lbENlbnRlcjogbmV3IEJlaGF2aW9yU3ViamVjdDxBc3luY0V2ZW50Pihpbml0RXZlbnQpLFxyXG4gIGVycm9yQ2hhbmVsOiBuZXcgU3ViamVjdCgpLFxyXG4gIGNsZWFyU3ViczogW10sXHJcbn1cclxuXHJcbmNvbnN0IGVtcHR5UnVuTm9vcCA9ICgpOiBhbnkgPT4ge1xyXG4gIGNvbnNvbGUuZXJyb3IoJ3BsZWFzZSBpbnN0YWxsIHZ1ZS1yb3V0ZXItcGluJylcclxuICByZXR1cm47XHJcbn1cclxuY29uc3QgRW1wdHlQaW46IFJvdXRlUGluICYgUm91dGVyUGluID0ge1xyXG4gIG9uOiBlbXB0eVJ1bk5vb3AsXHJcbiAgb25CZWhhdmlvcjogZW1wdHlSdW5Ob29wLFxyXG4gIG9uY2U6IGVtcHR5UnVuTm9vcCxcclxuICBvbkVycm9yOiBlbXB0eVJ1bk5vb3AsXHJcbiAgZGlzcGF0Y2g6IGVtcHR5UnVuTm9vcCxcclxuICBkaXNwYXRjaEFzeW5jOiBlbXB0eVJ1bk5vb3AsXHJcbn1cclxuXHJcbmV4cG9ydCB7XHJcbiAgR2xvYmFsUlNlcnZlcktleSxcclxuICBDdXJyZW50UlNlcnZlcktleSxcclxuICBTSEFMTF9DVVJSRU5ULFxyXG4gIEdsb2JhbF9TZXJ2ZSxcclxuICBTZXJ2ZXJNYXAsXHJcbiAgaW5pdEV2ZW50LFxyXG4gIGluaXRFdmVudEtleSxcclxuICBQb2x5U3ltYm9sLFxyXG4gIG5vb3AsXHJcbiAgRW1wdHlQaW4sXHJcbn0iXSwibmFtZXMiOltdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./src/initParams.ts\n");
+
+exports.__esModule = true;
+exports.EmptyPin = exports.noop = exports.PolySymbol = exports.initEventKey = exports.initEvent = exports.ServerMap = exports.Global_Serve = exports.SHALL_CURRENT = exports.CurrentRServerKey = exports.GlobalRServerKey = void 0;
+var rxjs_1 = __webpack_require__(/*! rxjs */ "rxjs");
+function noop() { }
+exports.noop = noop;
+;
+var hasSymbol = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
+var PolySymbol = function (name) {
+    // vr = vue router
+    return hasSymbol
+        ? Symbol["for"]('[r-server]: ' + name)
+        : ('[r-server]: ') + name;
+};
+exports.PolySymbol = PolySymbol;
+var initEventKey = PolySymbol('event-init');
+exports.initEventKey = initEventKey;
+var GlobalRServerKey = PolySymbol('GlobalRServerKey');
+exports.GlobalRServerKey = GlobalRServerKey;
+var CurrentRServerKey = PolySymbol('CurrentRServerKey');
+exports.CurrentRServerKey = CurrentRServerKey;
+var ServerMap = new Map();
+exports.ServerMap = ServerMap;
+var initEvent = { type: initEventKey, data: null, reject: noop, resolve: noop, source: undefined };
+exports.initEvent = initEvent;
+var SHALL_CURRENT = {
+    id: '',
+    channelCenter: new rxjs_1.BehaviorSubject(initEvent),
+    errorChanel: new rxjs_1.Subject(),
+    children: [],
+    clearSubs: []
+};
+exports.SHALL_CURRENT = SHALL_CURRENT;
+var Global_Serve = {
+    id: GlobalRServerKey,
+    router: undefined,
+    children: [],
+    channelCenter: new rxjs_1.BehaviorSubject(initEvent),
+    errorChanel: new rxjs_1.Subject(),
+    clearSubs: []
+};
+exports.Global_Serve = Global_Serve;
+var emptyRunNoop = function () {
+    console.error('please install vue-router-pin');
+    return;
+};
+var EmptyPin = {
+    on: emptyRunNoop,
+    onBehavior: emptyRunNoop,
+    once: emptyRunNoop,
+    onError: emptyRunNoop,
+    dispatch: emptyRunNoop,
+    dispatchAsync: emptyRunNoop
+};
+exports.EmptyPin = EmptyPin;
+
 
 /***/ }),
 
@@ -110,61 +489,21 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue_router__;
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/************************************************************************/
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	// This entry module can't be inlined because the eval-source-map devtool is used.
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __webpack_exports__ = __webpack_require__("./src/index.ts");
 /******/ 	
 /******/ 	return __webpack_exports__;
 /******/ })()
 ;
 });
+//# sourceMappingURL=pin.esm.dev.js.map

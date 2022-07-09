@@ -21,7 +21,7 @@
   "dependencies": {
     "rxjs": "^7.5.5"
   },
-  "files":[
+  "files": [
     "esm",
     "index.js",
     "index.d.ts",

@@ -31,9 +31,10 @@ function dispatchEvent(type: string, data: any, isAsync?: boolean, target?: Mess
   return Server.dispatch(type, data, isAsync, target);
 }
 
+
 export {
   Server as VueRouterPin,
   useRoutePin,
   useRouterPin,
-  dispatchEvent,
+  dispatchEvent
 }

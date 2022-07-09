@@ -32,9 +32,9 @@ const isEventType = (event: AsyncEvent, type: string | RegExp): boolean => {
 const currentServer = shallowRef(SHALL_CURRENT);
 
 function removeSub(tran: ServerBase, sub: Subscription) {
-  sub.unsubscribe();
+  sub && sub.unsubscribe();
   const index = tran.clearSubs.indexOf(sub);
-  index > -1 && (tran.clearSubs = tran.clearSubs.splice(index, 1));
+  index > -1 && (tran.clearSubs.splice(index, 1));
 }
 
 function dispatch(tran: ServerBase, event: AsyncEvent, isAsync: boolean = false) {
@@ -142,6 +142,7 @@ function onError(tran: ServerBase, callback: Function) {
       },
     })
   tran.clearSubs.push(sub);
+  return { close: () => removeSub(tran, sub) }
 }
 
 export const createRxFunc = (pin: ServerBase, source: MessageSource) => {
@@ -187,7 +188,7 @@ export const createRxFunc = (pin: ServerBase, source: MessageSource) => {
       return once(pin, type, callback);
     },
     onError: (callback: Function) => {
-      onError(pin, callback);
+      return onError(pin, callback);
     }
   }
 }

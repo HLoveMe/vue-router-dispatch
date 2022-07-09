@@ -10,7 +10,8 @@
   "dependencies": {
     "vue": "^3.2.25",
     "vue-router": "^4.0.0-0",
-    "vue-router-dispatch": "git+https://github.com/HLoveMe/vue-router-dispatch.git"
+    "vue-router-dispatch": "git+https://github.com/HLoveMe/vue-router-dispatch.git",
+    "safe-object": "git+https://github.com/HLoveMe/safe-object.git"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
