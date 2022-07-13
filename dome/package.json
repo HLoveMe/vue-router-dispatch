@@ -8,10 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "react-redux": "^8.0.2",
+    "safe-object": "git+https://github.com/HLoveMe/safe-object.git",
     "vue": "^3.2.25",
     "vue-router": "^4.0.0-0",
-    "vue-router-dispatch": "git+https://github.com/HLoveMe/vue-router-dispatch.git",
-    "safe-object": "git+https://github.com/HLoveMe/safe-object.git"
+    "vue-router-dispatch": "git+https://github.com/HLoveMe/vue-router-dispatch.git"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",

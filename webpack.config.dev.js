@@ -18,6 +18,26 @@ module.exports = {
       exclude: /(node_modules|bower_components|build)/,
       use: {
         loader: "babel-loader",
+        options:{
+          "plugins": [
+            [
+              "@babel/plugin-transform-runtime",
+              {
+                "helpers": true,
+                "corejs": 3,
+                "regenerator": true,
+                "useESModules": false,
+                "absoluteRuntime": false,
+              }
+            ]
+          ],
+          presets:[
+            [
+              '@babel/preset-env',{
+              }
+            ]
+          ]
+        }
       },
     },]
   },
