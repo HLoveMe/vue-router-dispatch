@@ -1,6 +1,6 @@
 {
   "name": "vue-router-dispatch",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description":"基于Vue-router,基于路由单元中进行事件派发",
   "main": "index.js",
   "scripts": {
