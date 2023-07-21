@@ -8,14 +8,13 @@
   * 安装库
     ```
     npm install vue-router-dispatch
-    // npm i git+https://github.com/HLoveMe/vue-router-dispatch.git
     ```
   * 引入插件
     ```
     import { VueRouterPin } from 'vue-router-dispatch'
     import { createRouter } from 'vue-router';
     import { createApp } from 'vue';
-    // 创建路由
+    // 创建
     const router = createRouter({});
     const app = createApp(App);
     // 注册路由

@@ -7,7 +7,11 @@ import {
   ServerRouter,
 } from "./type";
 
-function noop() { }
+function noop() {}
+
+function getUUID() {
+  return `${new Date().getTime()}_${Math.random()}`;
+}
 
 const hasSymbol =
   typeof Symbol === "function" && typeof Symbol.toStringTag === "symbol";
@@ -56,7 +60,7 @@ const emptyRunNoop = (): any => {
   return;
 };
 const EmptyPin: RoutePin & RouterPin = {
-  subscription: { _finalizers: [], close: () => { } },
+  subscription: { _finalizers: [], close: () => {} },
   on: emptyRunNoop,
   onBehavior: emptyRunNoop,
   once: emptyRunNoop,
@@ -77,4 +81,5 @@ export {
   PolySymbol,
   noop,
   EmptyPin,
+  getUUID
 };
